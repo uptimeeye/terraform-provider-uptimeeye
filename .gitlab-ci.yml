@@ -9,7 +9,9 @@ test:
   script:
     - go build ./...
     - go vet ./...
-    - gofmt -l . && test -z "$(gofmt -l .)"
+    # Check only project sources — GOMODCACHE lives inside the project dir
+    # for caching and must not be scanned.
+    - unformatted=$(gofmt -l main.go internal); if [ -n "$unformatted" ]; then echo "$unformatted"; exit 1; fi
     - go test ./... -v
   cache:
     key: go-mod

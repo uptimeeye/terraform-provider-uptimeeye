@@ -275,7 +275,7 @@ func buildStatusPageBody(ctx context.Context, diags *diag.Diagnostics, plan *Sta
 		Slug: plan.Slug.ValueString(),
 		// The backend forces status pages to be public; the DTO field only
 		// remains for API compatibility and is not part of the schema.
-		IsPublic: true,
+		IsPublic:             true,
 		Tags:                 ptr(listToStringSlice(ctx, diags, plan.Tags)),
 		Theme:                ptr(apiclient.StatusPageTheme(plan.Theme.ValueString())),
 		LogoUrl:              ptr(plan.LogoUrl.ValueString()),
