@@ -1,0 +1,19 @@
+# Primary CI (GitLab). Release/publishing to the Terraform Registry runs on the
+# GitHub mirror via .github/workflows/release.yml — see README "Hosting & Releasing".
+stages:
+  - test
+
+test:
+  stage: test
+  image: golang:1.25
+  script:
+    - go build ./...
+    - go vet ./...
+    - gofmt -l . && test -z "$(gofmt -l .)"
+    - go test ./... -v
+  cache:
+    key: go-mod
+    paths:
+      - .go-mod-cache/
+  variables:
+    GOMODCACHE: $CI_PROJECT_DIR/.go-mod-cache

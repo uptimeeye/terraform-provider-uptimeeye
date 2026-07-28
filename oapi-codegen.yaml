@@ -1,0 +1,15 @@
+package: apiclient
+output: internal/apiclient/client.gen.go
+generate:
+  models: true
+  client: true
+output-options:
+  include-tags:
+    - monitors
+    - scheduled-tasks
+    - notification
+    - status-pages
+    - status-page-domains
+    - status-page-reports
+    - variable
+    - locations

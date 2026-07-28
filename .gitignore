@@ -1,0 +1,15 @@
+# Binaries
+terraform-provider-uptimeeye
+dist/
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+crash.log
+
+# Editor/OS
+.DS_Store
+.idea/
+.vscode/

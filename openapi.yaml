@@ -1,0 +1,6657 @@
+components:
+  schemas:
+    AddStatusPageDomainRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/AddStatusPageDomainRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        hostname:
+          example: status.acme.com
+          type: string
+      required:
+        - hostname
+      type: object
+    AddStatusPageDomainResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/AddStatusPageDomainResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        cnameTarget:
+          type: string
+        domain:
+          $ref: "#/components/schemas/StatusPageDomain"
+      required:
+        - domain
+        - cnameTarget
+      type: object
+    ApiKey:
+      additionalProperties: false
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        createdBy:
+          example: user_2abc
+          type: string
+        id:
+          example: apik_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        keyPrefix:
+          example: ue_live_a1b2
+          type: string
+        lastUsedAt:
+          format: date-time
+          type: string
+        name:
+          example: Claude MCP
+          type: string
+      required:
+        - id
+        - name
+        - keyPrefix
+        - createdBy
+        - createdAt
+      type: object
+    ApiKeyCreated:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ApiKeyCreated.json
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          example: apik_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        key:
+          example: ue_live_a1b2c3...
+          type: string
+        keyPrefix:
+          example: ue_live_a1b2
+          type: string
+        name:
+          example: Claude MCP
+          type: string
+      required:
+        - id
+        - name
+        - keyPrefix
+        - key
+      type: object
+    Assert:
+      additionalProperties: false
+      properties:
+        expected:
+          example: "200"
+          type: string
+        operator:
+          enum:
+            - contains
+            - doesNotContain
+            - is
+            - isNot
+            - lessThan
+            - lessThanOrEqual
+            - moreThan
+            - moreThanOrEqual
+          example: is
+          type: string
+        property:
+          example: statusCode
+          type: string
+        type:
+          enum:
+            - body
+            - bodyJsonPath
+            - header
+            - statusCode
+            - dnsRecord
+            - responseTime
+            - sslCertificate
+          example: statusCode
+          type: string
+      required:
+        - type
+        - operator
+        - expected
+      type: object
+    AssertResult:
+      additionalProperties: false
+      properties:
+        actual:
+          type: string
+        expected:
+          type: string
+        operator:
+          type: string
+        property:
+          type: string
+        success:
+          type: boolean
+        type:
+          enum:
+            - body
+            - bodyJsonPath
+            - header
+            - statusCode
+            - dnsRecord
+            - responseTime
+            - sslCertificate
+          type: string
+      required:
+        - success
+        - type
+        - operator
+        - property
+        - expected
+        - actual
+      type: object
+    ChannelPost:
+      additionalProperties: true
+      properties:
+        chat:
+          $ref: "#/components/schemas/Chat"
+        text:
+          type: string
+      required:
+        - chat
+        - text
+      type: object
+    Chat:
+      additionalProperties: true
+      properties:
+        id:
+          format: int64
+          type: integer
+        type:
+          type: string
+      required:
+        - id
+        - type
+      type: object
+    ChatConversationDetail:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ChatConversationDetail.json
+          format: uri
+          readOnly: true
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          example: chat_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        messages:
+          items:
+            $ref: "#/components/schemas/ChatConversationMessage"
+          nullable: true
+          type: array
+        title:
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - title
+        - messages
+        - createdAt
+        - updatedAt
+      type: object
+    ChatConversationMessage:
+      additionalProperties: false
+      properties:
+        content:
+          example: Create a monitor for https://example.com
+          type: string
+        role:
+          enum:
+            - user
+            - assistant
+          example: user
+          type: string
+      required:
+        - role
+        - content
+      type: object
+    ChatConversationSummary:
+      additionalProperties: false
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          example: chat_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        title:
+          example: Create a monitor for https://example.com
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - title
+        - createdAt
+        - updatedAt
+      type: object
+    CheckoutRequest:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/CheckoutRequest.json
+          format: uri
+          readOnly: true
+          type: string
+        priceId:
+          type: string
+        promotionCodeId:
+          type: string
+        subscription:
+          type: boolean
+      required:
+        - priceId
+        - subscription
+      type: object
+    CheckoutResponse:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/CheckoutResponse.json
+          format: uri
+          readOnly: true
+          type: string
+        url:
+          type: string
+      required:
+        - url
+      type: object
+    ClerkEventAttributes:
+      additionalProperties: false
+      properties:
+        http_request:
+          $ref: "#/components/schemas/ClerkHTTPRequest"
+      required:
+        - http_request
+      type: object
+    ClerkHTTPRequest:
+      additionalProperties: false
+      properties:
+        client_ip:
+          type: string
+        user_agent:
+          type: string
+      required:
+        - client_ip
+        - user_agent
+      type: object
+    ClerkWebhookBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ClerkWebhookBody.json
+          format: uri
+          readOnly: true
+          type: string
+        data: {}
+        event_attributes:
+          $ref: "#/components/schemas/ClerkEventAttributes"
+        object:
+          type: string
+        timestamp:
+          format: int64
+          type: integer
+        type:
+          type: string
+      required:
+        - data
+        - event_attributes
+        - object
+        - timestamp
+        - type
+      type: object
+    ConfirmStatusPageSubscriptionRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ConfirmStatusPageSubscriptionRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        token:
+          type: string
+      required:
+        - token
+      type: object
+    ConfirmStatusPageSubscriptionResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ConfirmStatusPageSubscriptionResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        slug:
+          type: string
+        statusPageName:
+          type: string
+      required:
+        - slug
+        - statusPageName
+      type: object
+    CreateIncidentRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/CreateIncidentRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        affectedMonitorIds:
+          items:
+            type: string
+          nullable: true
+          type: array
+        affectedScheduledTaskIds:
+          items:
+            type: string
+          nullable: true
+          type: array
+        initialMessage:
+          type: string
+        occurredAt:
+          format: date-time
+          type: string
+        status:
+          default: investigating
+          type: string
+        statusPageIds:
+          items:
+            type: string
+          nullable: true
+          type: array
+        title:
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+        - title
+        - status
+        - initialMessage
+      type: object
+    CreateIncidentResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/CreateIncidentResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        incident:
+          $ref: "#/components/schemas/Incident"
+      required:
+        - incident
+      type: object
+    CreateIncidentUpdateRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/CreateIncidentUpdateRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        message:
+          type: string
+        status:
+          type: string
+      required:
+        - status
+        - message
+      type: object
+    CreateIncidentUpdateResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/CreateIncidentUpdateResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        incidentUpdate:
+          $ref: "#/components/schemas/IncidentUpdate"
+      required:
+        - incidentUpdate
+      type: object
+    CreateStatusPageResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/CreateStatusPageResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        status_page:
+          $ref: "#/components/schemas/StatusPage"
+      required:
+        - status_page
+      type: object
+    CronTask:
+      additionalProperties: false
+      properties:
+        cronExpression:
+          description: The cron expression for the task
+          example: "*/5 * * * *"
+          type: string
+        timezone:
+          type: string
+      required:
+        - cronExpression
+        - timezone
+      type: object
+    CustomerPortalRequest:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/CustomerPortalRequest.json
+          format: uri
+          readOnly: true
+          type: string
+      type: object
+    CustomerPortalResponse:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/CustomerPortalResponse.json
+          format: uri
+          readOnly: true
+          type: string
+        url:
+          type: string
+      required:
+        - url
+      type: object
+    DNSInfo:
+      additionalProperties: false
+      properties:
+        a:
+          format: ipv4
+          items:
+            type: string
+          minItems: 0
+          nullable: true
+          type: array
+        aaaa:
+          format: ipv6
+          items:
+            type: string
+          minItems: 0
+          nullable: true
+          type: array
+        cname:
+          items:
+            type: string
+          minItems: 0
+          nullable: true
+          type: array
+        mx:
+          items:
+            type: string
+          minItems: 0
+          nullable: true
+          type: array
+        ns:
+          items:
+            type: string
+          minItems: 0
+          nullable: true
+          type: array
+        txt:
+          items:
+            type: string
+          minItems: 0
+          nullable: true
+          type: array
+      type: object
+    DeleteApiKeyResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/DeleteApiKeyResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+      type: object
+    DeleteChatConversationResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/DeleteChatConversationResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+      type: object
+    DeleteVariableResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/DeleteVariableResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+      type: object
+    DiscordConfiguration:
+      additionalProperties: false
+      properties:
+        webhookUrl:
+          type: string
+      required:
+        - webhookUrl
+      type: object
+    DowngradeToFreeResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/DowngradeToFreeResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        message:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - message
+      type: object
+    EmailConfiguration:
+      additionalProperties: false
+      properties:
+        to:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - to
+      type: object
+    EnforcementSummary:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/EnforcementSummary.json
+          format: uri
+          readOnly: true
+          type: string
+        checkIntervalsUpdated:
+          format: int64
+          type: integer
+        details:
+          items:
+            type: string
+          nullable: true
+          type: array
+        message:
+          type: string
+        monitorsPaused:
+          format: int64
+          type: integer
+        projectsExceeded:
+          type: boolean
+        regionsReduced:
+          format: int64
+          type: integer
+        statusPagesExceeded:
+          type: boolean
+        tasksPaused:
+          format: int64
+          type: integer
+      required:
+        - monitorsPaused
+        - tasksPaused
+        - checkIntervalsUpdated
+        - regionsReduced
+        - statusPagesExceeded
+        - projectsExceeded
+        - message
+        - details
+      type: object
+    ErrorDetail:
+      additionalProperties: false
+      properties:
+        location:
+          description: Where the error occurred, e.g. 'body.items[3].tags' or 'path.thing-id'
+          type: string
+        message:
+          description: Error message text
+          type: string
+        value:
+          description: The value at the given location
+      type: object
+    ErrorModel:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ErrorModel.json
+          format: uri
+          readOnly: true
+          type: string
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          example: Property foo is required but is missing.
+          type: string
+        errors:
+          description: Optional list of individual error details
+          items:
+            $ref: "#/components/schemas/ErrorDetail"
+          nullable: true
+          type: array
+        instance:
+          description: A URI reference that identifies the specific occurrence of the problem.
+          example: https://example.com/error-log/abc123
+          format: uri
+          type: string
+        status:
+          description: HTTP status code
+          example: 400
+          format: int64
+          type: integer
+        title:
+          description: A short, human-readable summary of the problem type. This value should not change between occurrences of the error.
+          example: Bad Request
+          type: string
+        type:
+          default: about:blank
+          description: A URI reference to human-readable documentation for the error.
+          example: https://example.com/errors/example
+          format: uri
+          type: string
+      type: object
+    ExecutionByLocation:
+      additionalProperties: false
+      properties:
+        location:
+          type: string
+        steps:
+          items:
+            $ref: "#/components/schemas/StepResult"
+          nullable: true
+          type: array
+      required:
+        - location
+        - steps
+      type: object
+    ExecutionResponse:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ExecutionResponse.json
+          format: uri
+          readOnly: true
+          type: string
+        executionId:
+          type: string
+        executionsByLocation:
+          items:
+            $ref: "#/components/schemas/ExecutionByLocation"
+          nullable: true
+          type: array
+      required:
+        - executionId
+        - executionsByLocation
+      type: object
+    ExecutionResultSeries:
+      additionalProperties: false
+      properties:
+        location:
+          example: eu-central-1
+          type: string
+        time:
+          description: unix timestamp
+          example: 1672531200
+          format: int64
+          type: integer
+        totalTime:
+          format: double
+          type: number
+      required:
+        - time
+        - location
+        - totalTime
+      type: object
+    ExecutionStepSeries:
+      additionalProperties: false
+      properties:
+        stepId:
+          type: string
+        stepName:
+          type: string
+        success:
+          type: boolean
+        time:
+          description: unix timestamp
+          example: 1672531200
+          format: int64
+          type: integer
+        totalTime:
+          format: double
+          type: number
+      required:
+        - time
+        - stepId
+        - stepName
+        - success
+        - totalTime
+      type: object
+    ExecutionSummary:
+      additionalProperties: false
+      properties:
+        executions:
+          items:
+            $ref: "#/components/schemas/LocationExecution"
+          nullable: true
+          type: array
+        id:
+          type: string
+        success:
+          type: boolean
+        timestamp:
+          format: int64
+          type: integer
+      required:
+        - id
+        - executions
+        - timestamp
+        - success
+      type: object
+    ExtractedValues:
+      additionalProperties: false
+      properties:
+        location:
+          description: name of the http header or json path depending on type. Not used with raw.
+          example: $.accessToken
+          type: string
+        name:
+          example: accessToken
+          type: string
+        type:
+          enum:
+            - http_body_raw
+            - http_body_json
+            - http_header
+            - status_code
+          example: http_body_json
+          type: string
+      required:
+        - name
+        - location
+        - type
+      type: object
+    GetApiKeysResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetApiKeysResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        apiKeys:
+          items:
+            $ref: "#/components/schemas/ApiKey"
+          nullable: true
+          type: array
+      required:
+        - apiKeys
+      type: object
+    GetAvailableNotificationIntegrationsResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetAvailableNotificationIntegrationsResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        notificationIntegrations:
+          items:
+            $ref: "#/components/schemas/NotificationIntegration"
+          nullable: true
+          type: array
+      required:
+        - notificationIntegrations
+      type: object
+    GetChatConversationsResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetChatConversationsResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        conversations:
+          items:
+            $ref: "#/components/schemas/ChatConversationSummary"
+          nullable: true
+          type: array
+      required:
+        - conversations
+      type: object
+    GetIncidentsResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetIncidentsResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        incidents:
+          items:
+            $ref: "#/components/schemas/Incident"
+          nullable: true
+          type: array
+      required:
+        - incidents
+      type: object
+    GetInternalMonitorsRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetInternalMonitorsRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        ids:
+          items:
+            type: string
+          minItems: 1
+          nullable: true
+          type: array
+      required:
+        - ids
+      type: object
+    GetInternalMonitorsResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetInternalMonitorsResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        monitors:
+          items:
+            $ref: "#/components/schemas/MonitorWithVariables"
+          nullable: true
+          type: array
+      required:
+        - monitors
+      type: object
+    GetMonitorExecutionsOutputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetMonitorExecutionsOutputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        executions:
+          items:
+            $ref: "#/components/schemas/ExecutionSummary"
+          nullable: true
+          type: array
+      required:
+        - executions
+      type: object
+    GetNextMonitorsToExecuteResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetNextMonitorsToExecuteResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        monitors:
+          items:
+            $ref: "#/components/schemas/NextMonitorToExecute"
+          nullable: true
+          type: array
+      required:
+        - monitors
+      type: object
+    GetNotificationChannelsResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetNotificationChannelsResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        notificationChannels:
+          items:
+            $ref: "#/components/schemas/NotificationChannel"
+          nullable: true
+          type: array
+      required:
+        - notificationChannels
+      type: object
+    GetNotificationIntegrationsResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetNotificationIntegrationsResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        notificationIntegrations:
+          items:
+            $ref: "#/components/schemas/NotificationIntegration"
+          nullable: true
+          type: array
+      required:
+        - notificationIntegrations
+      type: object
+    GetReportScheduleResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetReportScheduleResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        reportsEnabled:
+          type: boolean
+        schedule:
+          $ref: "#/components/schemas/ReportSchedule"
+      required:
+        - schedule
+        - reportsEnabled
+      type: object
+    GetScheduledTaskEventsResponse:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetScheduledTaskEventsResponse.json
+          format: uri
+          readOnly: true
+          type: string
+        events:
+          items:
+            $ref: "#/components/schemas/ScheduledTaskEvent"
+          nullable: true
+          type: array
+      required:
+        - events
+      type: object
+    GetScheduledTasksWithHealthDetailsOutputResponse:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetScheduledTasksWithHealthDetailsOutputResponse.json
+          format: uri
+          readOnly: true
+          type: string
+        scheduledTasks:
+          items:
+            $ref: "#/components/schemas/ScheduledTaskHealthDetails"
+          nullable: true
+          type: array
+      required:
+        - scheduledTasks
+      type: object
+    GetStatusPageIncidentsResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetStatusPageIncidentsResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        incidents:
+          items:
+            $ref: "#/components/schemas/Incident"
+          nullable: true
+          type: array
+      required:
+        - incidents
+      type: object
+    GetStatusPagesResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetStatusPagesResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        statusPages:
+          items:
+            $ref: "#/components/schemas/StatusPage"
+          nullable: true
+          type: array
+      required:
+        - statusPages
+      type: object
+    GetVariablesResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetVariablesResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        variables:
+          items:
+            $ref: "#/components/schemas/Variable"
+          nullable: true
+          type: array
+      required:
+        - variables
+      type: object
+    HandleGetResultRedirectOutputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/HandleGetResultRedirectOutputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        url:
+          type: string
+      required:
+        - url
+      type: object
+    Header:
+      additionalProperties: false
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      required:
+        - key
+        - value
+      type: object
+    HeartbeatPoint:
+      additionalProperties: false
+      properties:
+        success:
+          type: boolean
+        time:
+          description: unix timestamp
+          example: 1672531200
+          format: int64
+          type: integer
+        totalTime:
+          description: average response time in ms
+          format: double
+          type: number
+      required:
+        - time
+        - success
+        - totalTime
+      type: object
+    HttpTimings:
+      additionalProperties: false
+      properties:
+        dns:
+          description: microseconds
+          format: int64
+          type: integer
+        download:
+          description: microseconds
+          format: int64
+          type: integer
+        firstByte:
+          description: microseconds
+          format: int64
+          type: integer
+        handshake:
+          description: microseconds
+          format: int64
+          type: integer
+        tcp:
+          description: microseconds
+          format: int64
+          type: integer
+        total:
+          description: microseconds
+          format: int64
+          type: integer
+      required:
+        - dns
+        - download
+        - firstByte
+        - handshake
+        - tcp
+        - total
+      type: object
+    Incident:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/Incident.json
+          format: uri
+          readOnly: true
+          type: string
+        affectedMonitorIds:
+          items:
+            type: string
+          nullable: true
+          type: array
+        affectedScheduledTaskIds:
+          items:
+            type: string
+          nullable: true
+          type: array
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          example: inc_123456
+          type: string
+        occurredAt:
+          format: date-time
+          type: string
+        resolvedAt:
+          format: date-time
+          type: string
+        status:
+          example: investigating
+          type: string
+        statusPageIds:
+          items:
+            type: string
+          nullable: true
+          type: array
+        title:
+          example: API Performance Degradation
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        updates:
+          items:
+            $ref: "#/components/schemas/IncidentUpdate"
+          nullable: true
+          type: array
+      required:
+        - title
+        - status
+        - occurredAt
+      type: object
+    IncidentUpdate:
+      additionalProperties: false
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        id:
+          example: incu_123
+          type: string
+        incidentId:
+          example: inc_456
+          type: string
+        message:
+          example: We are investigating reports of slow API responses
+          type: string
+        status:
+          example: investigating
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - status
+        - message
+      type: object
+    ListStatusPageDomainsResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ListStatusPageDomainsResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        cnameTarget:
+          type: string
+        domains:
+          items:
+            $ref: "#/components/schemas/StatusPageDomain"
+          nullable: true
+          type: array
+      required:
+        - domains
+        - cnameTarget
+      type: object
+    ListStatusPageSubscribersResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ListStatusPageSubscribersResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        count:
+          format: int64
+          type: integer
+        maxSubscribers:
+          format: int64
+          type: integer
+        subscribers:
+          items:
+            $ref: "#/components/schemas/StatusPageSubscriber"
+          nullable: true
+          type: array
+      required:
+        - subscribers
+        - count
+        - maxSubscribers
+      type: object
+    LocationExecution:
+      additionalProperties: false
+      properties:
+        durationInMs:
+          format: int64
+          type: integer
+        location:
+          type: string
+        success:
+          type: boolean
+      required:
+        - location
+        - durationInMs
+        - success
+      type: object
+    LocationsResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/LocationsResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        locations:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - locations
+      type: object
+    Message:
+      additionalProperties: true
+      properties:
+        chat:
+          $ref: "#/components/schemas/Chat"
+        text:
+          type: string
+      required:
+        - chat
+        - text
+      type: object
+    Metadata:
+      additionalProperties: false
+      properties:
+        priceId:
+          type: string
+        userId:
+          type: string
+      required:
+        - userId
+        - priceId
+      type: object
+    Monitor:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/Monitor.json
+          format: uri
+          readOnly: true
+          type: string
+        favicon:
+          description: Favicon of the monitored site as a base64 data URI. Server-managed; fetched automatically for HTTP monitors.
+          readOnly: true
+          type: string
+        id:
+          readOnly: true
+          type: string
+        locations:
+          example:
+            - fra
+          items:
+            type: string
+          nullable: true
+          type: array
+        message:
+          description: Notification message associated with the monitor.
+          example: My website is down. Restart server to get it up and running again.
+          type: string
+        name:
+          example: My Website Monitor
+          type: string
+        notificationChannelId:
+          description: The ID of the Notification channel associated with the monitor.
+          type: string
+        options:
+          $ref: "#/components/schemas/MonitorOptions"
+        status:
+          enum:
+            - UNKNOWN
+            - SUCCESS
+            - FAILURE
+            - PAUSED
+          type: string
+        steps:
+          items:
+            $ref: "#/components/schemas/MonitorTestStep"
+          maximum: 5
+          minimum: 1
+          nullable: true
+          type: array
+        tags:
+          default: []
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - name
+        - notificationChannelId
+        - locations
+        - steps
+        - options
+        - status
+      type: object
+    MonitorExecutionResult:
+      additionalProperties: false
+      properties:
+        executionId:
+          type: string
+        location:
+          type: string
+        monitorId:
+          type: string
+        results:
+          items:
+            $ref: "#/components/schemas/StepResult"
+          nullable: true
+          type: array
+      required:
+        - executionId
+        - monitorId
+        - location
+        - results
+      type: object
+    MonitorHealth:
+      additionalProperties: false
+      properties:
+        avgResponseMs:
+          description: average response time in ms over the last 24h, null when no checks ran
+          format: double
+          type: number
+        downSince:
+          format: int64
+          type: integer
+        favicon:
+          description: favicon of the monitored site as a base64 data URI
+          type: string
+        heartbeat:
+          items:
+            $ref: "#/components/schemas/HeartbeatPoint"
+          nullable: true
+          type: array
+        interval:
+          description: check interval in seconds
+          format: int64
+          type: integer
+        lastCheck:
+          description: unix timestamp of the most recent check
+          format: int64
+          type: integer
+        monitorId:
+          type: string
+        name:
+          type: string
+        regions:
+          items:
+            type: string
+          nullable: true
+          type: array
+        regionsDown:
+          items:
+            type: string
+          nullable: true
+          type: array
+        status:
+          enum:
+            - UNKNOWN
+            - SUCCESS
+            - FAILURE
+            - PAUSED
+          type: string
+        stepsCount:
+          format: int64
+          type: integer
+        tags:
+          items:
+            type: string
+          nullable: true
+          type: array
+        upSince:
+          format: int64
+          type: integer
+        uptime:
+          description: uptime percentage over the last 24h, null when no checks ran
+          format: double
+          type: number
+        url:
+          description: primary HTTP step URL of the monitor
+          type: string
+      required:
+        - monitorId
+        - name
+        - status
+        - stepsCount
+        - tags
+        - regions
+        - regionsDown
+        - heartbeat
+      type: object
+    MonitorLimits:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/MonitorLimits.json
+          format: uri
+          readOnly: true
+          type: string
+        maxMonitorSteps:
+          example: 5
+          format: int64
+          type: integer
+        minCheckInterval:
+          example: 300
+          format: int64
+          type: integer
+      required:
+        - maxMonitorSteps
+        - minCheckInterval
+      type: object
+    MonitorOptions:
+      additionalProperties: false
+      properties:
+        failureThreshold:
+          default: 2
+          description: Number of consecutive failures before triggering an alarm
+          format: int64
+          maximum: 10
+          minimum: 1
+          type: integer
+        followRedirects:
+          default: true
+          description: Whether to follow redirects or not.
+          type: boolean
+        locationThreshold:
+          default: 1
+          description: Number of locations that must fail before triggering an alarm
+          format: int64
+          maximum: 10
+          minimum: 1
+          type: integer
+        tickEvery:
+          default: 60
+          description: Frequency in seconds
+          format: int64
+          maximum: 86400
+          minimum: 30
+          type: integer
+        timeout:
+          default: 60
+          description: How long to wait for a response from the monitor in seconds.
+          format: int64
+          minimum: 5
+          type: integer
+      required:
+        - tickEvery
+        - timeout
+        - followRedirects
+        - failureThreshold
+        - locationThreshold
+      type: object
+    MonitorStatistics:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/MonitorStatistics.json
+          format: uri
+          readOnly: true
+          type: string
+        downSince:
+          description: unix timestamp
+          format: int64
+          type: integer
+        incidents:
+          format: int64
+          type: integer
+        monitorId:
+          type: string
+        name:
+          type: string
+        status:
+          enum:
+            - UNKNOWN
+            - SUCCESS
+            - FAILURE
+            - PAUSED
+          type: string
+        upSince:
+          description: unix timestamp
+          format: int64
+          type: integer
+      required:
+        - name
+        - incidents
+        - status
+      type: object
+    MonitorTestStep:
+      additionalProperties: false
+      properties:
+        asserts:
+          items:
+            $ref: "#/components/schemas/Assert"
+          nullable: true
+          type: array
+        execNumber:
+          format: int64
+          type: integer
+        extractedValues:
+          items:
+            $ref: "#/components/schemas/ExtractedValues"
+          nullable: true
+          type: array
+        id:
+          type: string
+        name:
+          type: string
+        request:
+          $ref: "#/components/schemas/RequestTemplate"
+        type:
+          enum:
+            - http
+            - dns
+            - icmp
+          example: http
+          type: string
+      required:
+        - execNumber
+        - type
+        - request
+        - asserts
+      type: object
+    MonitorTimeSeriesResponse:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/MonitorTimeSeriesResponse.json
+          format: uri
+          readOnly: true
+          type: string
+        executionAvgTime:
+          format: double
+          type: number
+        executionSeries:
+          items:
+            $ref: "#/components/schemas/ExecutionResultSeries"
+          nullable: true
+          type: array
+        executionStepSeries:
+          items:
+            $ref: "#/components/schemas/ExecutionStepSeries"
+          nullable: true
+          type: array
+        monitorId:
+          type: string
+        uptimePercentage:
+          format: double
+          type: number
+        uptimeSeries:
+          items:
+            $ref: "#/components/schemas/UptimeSeries"
+          nullable: true
+          type: array
+      required:
+        - uptimePercentage
+        - uptimeSeries
+        - executionAvgTime
+        - executionSeries
+        - executionStepSeries
+      type: object
+    MonitorWithVariables:
+      additionalProperties: false
+      properties:
+        monitor:
+          $ref: "#/components/schemas/Monitor"
+        variables:
+          items:
+            $ref: "#/components/schemas/Variable"
+          nullable: true
+          type: array
+      required:
+        - monitor
+        - variables
+      type: object
+    NextMonitorToExecute:
+      additionalProperties: false
+      properties:
+        executionId:
+          type: string
+        monitorId:
+          type: string
+        version:
+          format: date-time
+          type: string
+      required:
+        - monitorId
+        - executionId
+        - version
+      type: object
+    Notification:
+      additionalProperties: false
+      properties:
+        created_at:
+          type: string
+        execution_id:
+          type: string
+        execution_status:
+          type: string
+        reference_id:
+          type: string
+        reference_name:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+      required:
+        - created_at
+        - status
+        - type
+        - reference_id
+        - reference_name
+        - execution_id
+        - execution_status
+      type: object
+    NotificationChannel:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/NotificationChannel.json
+          format: uri
+          readOnly: true
+          type: string
+        enabledIntegrations:
+          items:
+            type: string
+          nullable: true
+          readOnly: true
+          type: array
+        id:
+          type: string
+        name:
+          type: string
+        tags:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - name
+        - tags
+      type: object
+    NotificationChannelDetails:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/NotificationChannelDetails.json
+          format: uri
+          readOnly: true
+          type: string
+        associatedMonitors:
+          items:
+            $ref: "#/components/schemas/Monitor"
+          nullable: true
+          type: array
+        associatedScheduledTasks:
+          items:
+            $ref: "#/components/schemas/ScheduledTask"
+          nullable: true
+          type: array
+        created_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        recentNotifications:
+          items:
+            $ref: "#/components/schemas/Notification"
+          nullable: true
+          type: array
+        updated_at:
+          format: date-time
+          type: string
+      required:
+        - created_at
+        - updated_at
+      type: object
+    NotificationIntegration:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/NotificationIntegration.json
+          format: uri
+          readOnly: true
+          type: string
+        configuration:
+          $ref: "#/components/schemas/NotificationIntegrationConfiguration"
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          enum:
+            - slack
+            - teams
+            - discord
+            - email
+            - webhook
+            - telegram
+            - pagerduty
+          example: slack
+          type: string
+      required:
+        - type
+        - name
+        - configuration
+      type: object
+    NotificationIntegrationConfiguration:
+      additionalProperties: false
+      properties:
+        discord:
+          $ref: "#/components/schemas/DiscordConfiguration"
+        email:
+          $ref: "#/components/schemas/EmailConfiguration"
+        pagerduty:
+          $ref: "#/components/schemas/PagerDutyConfiguration"
+        slack:
+          $ref: "#/components/schemas/SlackConfiguration"
+        teams:
+          $ref: "#/components/schemas/TeamsConfiguration"
+        telegram:
+          $ref: "#/components/schemas/TelegramConfiguration"
+        webhook:
+          $ref: "#/components/schemas/WebhookConfiguration"
+      type: object
+    OnboardingOrganizationSelection:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/OnboardingOrganizationSelection.json
+          format: uri
+          readOnly: true
+          type: string
+        organizationId:
+          type: string
+      required:
+        - organizationId
+      type: object
+    OnboardingUserInformation:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/OnboardingUserInformation.json
+          format: uri
+          readOnly: true
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        referral:
+          type: string
+      required:
+        - firstName
+        - lastName
+        - referral
+      type: object
+    OrganizationSummary:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/OrganizationSummary.json
+          format: uri
+          readOnly: true
+          type: string
+        down_monitors:
+          format: int64
+          type: integer
+        down_scheduled_tasks:
+          format: int64
+          type: integer
+        up_monitors:
+          format: int64
+          type: integer
+        up_scheduled_tasks:
+          format: int64
+          type: integer
+      required:
+        - up_monitors
+        - down_monitors
+        - up_scheduled_tasks
+        - down_scheduled_tasks
+      type: object
+    PagerDutyConfiguration:
+      additionalProperties: false
+      properties:
+        routingKey:
+          type: string
+        source:
+          type: string
+      required:
+        - routingKey
+      type: object
+    PostApiKeyRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PostApiKeyRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        name:
+          example: Claude MCP
+          maxLength: 100
+          minLength: 1
+          type: string
+      required:
+        - name
+      type: object
+    PostMonitorExecutionResultRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PostMonitorExecutionResultRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        results:
+          items:
+            $ref: "#/components/schemas/MonitorExecutionResult"
+          nullable: true
+          type: array
+      required:
+        - results
+      type: object
+    PostSiteCheckRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PostSiteCheckRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        url:
+          description: URL or domain to check
+          example: https://example.com
+          maxLength: 2048
+          minLength: 1
+          type: string
+      required:
+        - url
+      type: object
+    PostTestRequestRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PostTestRequestRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        body:
+          description: Request body, only used for type http
+          maxLength: 65536
+          type: string
+        headers:
+          description: Request headers, only used for type http
+          items:
+            $ref: "#/components/schemas/Header"
+          nullable: true
+          type: array
+        method:
+          description: HTTP method (HEAD, GET, POST, PUT, DELETE), only used for type http. Defaults to GET.
+          example: GET
+          type: string
+        type:
+          default: http
+          description: Step type to test
+          enum:
+            - http
+            - dns
+            - icmp
+          type: string
+        url:
+          description: URL (http) or hostname (dns, icmp)
+          example: https://api.example.com/health
+          maxLength: 2048
+          minLength: 1
+          type: string
+      required:
+        - type
+        - url
+      type: object
+    PostVariableRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PostVariableRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        key:
+          example: API_KEY
+          type: string
+        secure:
+          example: true
+          type: boolean
+        value:
+          example: secret-value
+          type: string
+      required:
+        - key
+        - value
+        - secure
+      type: object
+    PostWaitingListRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PostWaitingListRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        email:
+          type: string
+      required:
+        - email
+      type: object
+    ProxyRequest:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ProxyRequest.json
+          format: uri
+          readOnly: true
+          type: string
+        body:
+          type: string
+        headers:
+          additionalProperties:
+            type: string
+          type: object
+        method:
+          example: GET
+          type: string
+        url:
+          example: https://www.mmueller.io
+          type: string
+      required:
+        - url
+        - method
+      type: object
+    ProxyResponse:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ProxyResponse.json
+          format: uri
+          readOnly: true
+          type: string
+        body:
+          type: string
+        headers:
+          additionalProperties:
+            type: string
+          type: object
+        isSSL:
+          type: boolean
+        statusCode:
+          format: int64
+          type: integer
+      required:
+        - statusCode
+        - headers
+        - body
+        - isSSL
+      type: object
+    PutReportScheduleResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PutReportScheduleResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        schedule:
+          $ref: "#/components/schemas/ReportSchedule"
+      required:
+        - schedule
+      type: object
+    PutVariableRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PutVariableRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        key:
+          example: API_KEY
+          type: string
+        secure:
+          example: true
+          type: boolean
+        value:
+          example: secret-value
+          type: string
+      type: object
+    ReportSchedule:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ReportSchedule.json
+          format: uri
+          readOnly: true
+          type: string
+        cadence:
+          example: weekly
+          type: string
+        enabled:
+          type: boolean
+        recipients:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - cadence
+        - recipients
+        - enabled
+      type: object
+    RequestTemplate:
+      additionalProperties: false
+      properties:
+        body:
+          description: depends on request method
+          example: "{\"key\":\"value\"}"
+          type: string
+        header:
+          description: depends on request method
+          example:
+            - key: Content-Type
+              value: application/json
+          items:
+            $ref: "#/components/schemas/Header"
+          nullable: true
+          type: array
+        method:
+          default: HEAD
+          description: HEAD,GET,POST,PUT,DELETE
+          example: POST
+          type: string
+        url:
+          example: https://uptimeeye.com
+          type: string
+      required:
+        - url
+      type: object
+    ResolveHostResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ResolveHostResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        isPublic:
+          type: boolean
+        slug:
+          type: string
+      required:
+        - slug
+        - isPublic
+      type: object
+    Response:
+      additionalProperties: false
+      properties:
+        body:
+          description: will be truncated to 100 characters, when successful
+          type: string
+        headers:
+          description: will be truncated, when successful
+          items:
+            $ref: "#/components/schemas/Header"
+          nullable: true
+          type: array
+        statusCode:
+          format: int64
+          type: integer
+      type: object
+    SSLInfo:
+      additionalProperties: false
+      properties:
+        dnsNames:
+          items:
+            type: string
+          nullable: true
+          type: array
+        expireIn:
+          description: in nanoseconds
+          format: int64
+          type: integer
+        issuer:
+          type: string
+        organization:
+          type: string
+        subject:
+          type: string
+        validFrom:
+          format: date-time
+          type: string
+        validUntil:
+          format: date-time
+          type: string
+      required:
+        - issuer
+        - organization
+        - subject
+        - dnsNames
+        - validFrom
+        - validUntil
+        - expireIn
+      type: object
+    ScheduledTask:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ScheduledTask.json
+          format: uri
+          readOnly: true
+          type: string
+        createdAt:
+          format: date-time
+          readOnly: true
+          type: string
+        cronTask:
+          $ref: "#/components/schemas/CronTask"
+        gracePeriod:
+          description: grace period in minutes
+          format: int64
+          maximum: 1440
+          minimum: 0
+          type: integer
+        id:
+          readOnly: true
+          type: string
+        name:
+          type: string
+        notificationChannelId:
+          description: The ID of the Notification channel associated with the monitor.
+          type: string
+        simpleTask:
+          $ref: "#/components/schemas/SimpleTask"
+        status:
+          enum:
+            - UNKNOWN
+            - SUCCESS
+            - FAILURE
+            - PAUSED
+          type: string
+        tags:
+          items:
+            type: string
+          nullable: true
+          type: array
+        type:
+          enum:
+            - simple
+            - cron
+          type: string
+        updatedAt:
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+        - notificationChannelId
+        - name
+        - type
+        - tags
+        - gracePeriod
+      type: object
+    ScheduledTaskEvent:
+      additionalProperties: false
+      properties:
+        duration:
+          format: int64
+          type: integer
+        id:
+          type: string
+        scheduledTaskID:
+          type: string
+        source:
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        type:
+          type: string
+        userAgent:
+          type: string
+      required:
+        - id
+        - scheduledTaskID
+        - type
+        - timestamp
+        - source
+        - userAgent
+      type: object
+    ScheduledTaskHealthDetails:
+      additionalProperties: false
+      properties:
+        cronTask:
+          $ref: "#/components/schemas/CronTask"
+        downSince:
+          description: unix timestamp
+          format: int64
+          type: integer
+        gracePeriod:
+          description: grace period in minutes
+          format: int64
+          type: integer
+        id:
+          type: string
+        name:
+          type: string
+        nextBeat:
+          description: unix timestamp
+          format: int64
+          type: integer
+        simpleTask:
+          $ref: "#/components/schemas/SimpleTask"
+        status:
+          enum:
+            - UNKNOWN
+            - SUCCESS
+            - FAILURE
+            - PAUSED
+            - NEW
+          type: string
+        tags:
+          items:
+            type: string
+          nullable: true
+          type: array
+        type:
+          type: string
+        upSince:
+          description: unix timestamp
+          format: int64
+          type: integer
+      required:
+        - id
+        - status
+        - name
+        - tags
+        - type
+        - nextBeat
+        - gracePeriod
+      type: object
+    ScheduledTaskLimits:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ScheduledTaskLimits.json
+          format: uri
+          readOnly: true
+          type: string
+        minCheckInterval:
+          example: 300
+          format: int64
+          type: integer
+      required:
+        - minCheckInterval
+      type: object
+    ScheduledTaskStatistics:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/ScheduledTaskStatistics.json
+          format: uri
+          readOnly: true
+          type: string
+        downSince:
+          description: unix timestamp
+          format: int64
+          type: integer
+        lastBeatAt:
+          description: unix timestamp
+          format: int64
+          type: integer
+        name:
+          type: string
+        nextBeatAt:
+          description: unix timestamp
+          format: int64
+          type: integer
+        scheduledTaskId:
+          type: string
+        status:
+          enum:
+            - UNKNOWN
+            - SUCCESS
+            - FAILURE
+            - PAUSED
+          type: string
+        totalBeats:
+          format: int64
+          type: integer
+        upSince:
+          description: unix timestamp
+          format: int64
+          type: integer
+      required:
+        - totalBeats
+      type: object
+    SimpleTask:
+      additionalProperties: false
+      properties:
+        intervalType:
+          enum:
+            - minute
+            - hour
+            - day
+          example: minute
+          type: string
+        intervalValue:
+          description: The expected time between checks
+          example: 5
+          format: int64
+          type: integer
+      required:
+        - intervalValue
+        - intervalType
+      type: object
+    SiteCheckResult:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/SiteCheckResult.json
+          format: uri
+          readOnly: true
+          type: string
+        error:
+          example: connection refused
+          type: string
+        reachable:
+          example: true
+          type: boolean
+        responseTimeMs:
+          example: 123
+          format: int64
+          type: integer
+        sslDaysRemaining:
+          example: 42
+          format: int64
+          type: integer
+        sslIssuer:
+          example: R3
+          type: string
+        sslValidUntil:
+          description: Certificate expiry in RFC3339, only set for https targets
+          example: "2026-09-01T12:00:00Z"
+          type: string
+        statusCode:
+          example: 200
+          format: int64
+          type: integer
+      required:
+        - reachable
+        - statusCode
+        - responseTimeMs
+      type: object
+    SlackConfiguration:
+      additionalProperties: false
+      properties:
+        channel:
+          type: string
+        slackWebhook: {}
+        webhookUrl:
+          type: string
+      required:
+        - webhookUrl
+        - channel
+        - slackWebhook
+      type: object
+    StartTrialInputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/StartTrialInputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        subscriptionId:
+          description: The subscription plan ID to start trial for
+          example: sub_elNdLGpT1PkTslXODkfq1
+          type: string
+      required:
+        - subscriptionId
+      type: object
+    StartTrialResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/StartTrialResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        message:
+          type: string
+        success:
+          type: boolean
+        trialEndsAt:
+          type: string
+      required:
+        - success
+        - message
+        - trialEndsAt
+      type: object
+    StatusPage:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/StatusPage.json
+          format: uri
+          readOnly: true
+          type: string
+        activeCustomDomain:
+          type: string
+        brandColor:
+          maxLength: 9
+          type: string
+        customDomainEnabled:
+          type: boolean
+        hidePoweredBy:
+          type: boolean
+        id:
+          example: spg_123456
+          type: string
+        isPublic:
+          example: false
+          type: boolean
+        logoUrl:
+          maxLength: 2048
+          type: string
+        name:
+          example: Default
+          type: string
+        sections:
+          items:
+            $ref: "#/components/schemas/StatusPageSection"
+          nullable: true
+          type: array
+        slug:
+          example: default-status-page
+          type: string
+        subscribersEnabled:
+          type: boolean
+        subscriptionsEnabled:
+          default: true
+          type: boolean
+        tags:
+          default: []
+          items:
+            type: string
+          nullable: true
+          type: array
+        theme:
+          default: dark
+          enum:
+            - dark
+            - light
+            - auto
+          type: string
+        whiteLabelEnabled:
+          type: boolean
+      required:
+        - name
+        - slug
+        - isPublic
+        - sections
+      type: object
+    StatusPageData:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/StatusPageData.json
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          type: string
+        is_public:
+          type: boolean
+        monitor_statistics:
+          items:
+            $ref: "#/components/schemas/MonitorStatistics"
+          nullable: true
+          type: array
+        monitor_time_series:
+          items:
+            $ref: "#/components/schemas/MonitorTimeSeriesResponse"
+          nullable: true
+          type: array
+        scheduled_task_events:
+          items:
+            $ref: "#/components/schemas/ScheduledTaskEvent"
+          nullable: true
+          type: array
+        scheduled_task_statistics:
+          items:
+            $ref: "#/components/schemas/ScheduledTaskStatistics"
+          nullable: true
+          type: array
+      required:
+        - id
+        - is_public
+        - monitor_statistics
+      type: object
+    StatusPageDomain:
+      additionalProperties: false
+      properties:
+        createdAt:
+          format: date-time
+          type: string
+        hostname:
+          type: string
+        id:
+          type: string
+        lastError:
+          type: string
+        status:
+          type: string
+      required:
+        - id
+        - hostname
+        - status
+        - createdAt
+      type: object
+    StatusPageRouteCheckResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/StatusPageRouteCheckResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          type: string
+        is_public:
+          type: boolean
+      required:
+        - is_public
+      type: object
+    StatusPageSection:
+      additionalProperties: false
+      properties:
+        description:
+          example: Status of API endpoints
+          type: string
+        id:
+          example: statps_123
+          type: string
+        monitors:
+          items:
+            $ref: "#/components/schemas/StatusPageSectionMonitor"
+          nullable: true
+          type: array
+        name:
+          example: API Services
+          type: string
+        scheduledTasks:
+          items:
+            $ref: "#/components/schemas/StatusPageSectionScheduledTask"
+          nullable: true
+          type: array
+        statusPageId:
+          example: statps_123
+          type: string
+      required:
+        - statusPageId
+        - name
+        - description
+        - monitors
+        - scheduledTasks
+      type: object
+    StatusPageSectionMonitor:
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        monitorId:
+          example: mon_789
+          type: string
+        showResponseTime:
+          example: false
+          type: boolean
+        showUptime:
+          example: true
+          type: boolean
+      required:
+        - monitorId
+        - showUptime
+        - showResponseTime
+      type: object
+    StatusPageSectionScheduledTask:
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        scheduledTaskId:
+          example: task_456
+          type: string
+      required:
+        - scheduledTaskId
+      type: object
+    StatusPageSubscriber:
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+        id:
+          type: string
+        subscribedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - email
+        - subscribedAt
+      type: object
+    StepResult:
+      additionalProperties: false
+      properties:
+        asserts:
+          items:
+            $ref: "#/components/schemas/AssertResult"
+          nullable: true
+          type: array
+        dnsInfo:
+          $ref: "#/components/schemas/DNSInfo"
+        endAt:
+          format: date-time
+          type: string
+        error:
+          type: string
+        response:
+          $ref: "#/components/schemas/Response"
+        sslInfo:
+          $ref: "#/components/schemas/SSLInfo"
+        startAt:
+          format: date-time
+          type: string
+        stepId:
+          type: string
+        success:
+          type: boolean
+        timings:
+          $ref: "#/components/schemas/HttpTimings"
+      required:
+        - stepId
+        - success
+        - startAt
+        - endAt
+      type: object
+    StripeData:
+      additionalProperties: false
+      properties:
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+        object: {}
+      required:
+        - object
+        - metadata
+      type: object
+    StripeEvent:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/StripeEvent.json
+          format: uri
+          readOnly: true
+          type: string
+        data:
+          $ref: "#/components/schemas/StripeData"
+        type:
+          type: string
+      required:
+        - type
+        - data
+      type: object
+    SubscribeToStatusPageRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/SubscribeToStatusPageRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        captchaToken:
+          type: string
+        email:
+          example: user@example.com
+          format: email
+          type: string
+      required:
+        - email
+      type: object
+    SubscribeToStatusPageResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/SubscribeToStatusPageResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        status:
+          type: string
+      required:
+        - status
+      type: object
+    Subscription:
+      additionalProperties: false
+      properties:
+        BillingCycle:
+          type: string
+        Name:
+          type: string
+        PriceID:
+          type: string
+      required:
+        - Name
+        - PriceID
+        - BillingCycle
+      type: object
+    SubscriptionDetails:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/SubscriptionDetails.json
+          format: uri
+          readOnly: true
+          type: string
+        AllowCustomDomain:
+          type: boolean
+        AllowPerComponentSubscription:
+          type: boolean
+        AllowWhiteLabel:
+          type: boolean
+        CheckIntervalSeconds:
+          format: int64
+          type: integer
+        CurrentMonitors:
+          format: int64
+          type: integer
+        CurrentTasks:
+          format: int64
+          type: integer
+        CurrentUsers:
+          format: int64
+          type: integer
+        MaxCustomDomains:
+          format: int64
+          type: integer
+        MaxMonitors:
+          format: int64
+          type: integer
+        MaxSubscribers:
+          format: int64
+          type: integer
+        MaxTasks:
+          format: int64
+          type: integer
+        MaxUsers:
+          format: int64
+          type: integer
+        Name:
+          type: string
+        NotificationChannelIntegrations:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - Name
+        - CheckIntervalSeconds
+        - NotificationChannelIntegrations
+        - MaxUsers
+        - MaxMonitors
+        - MaxTasks
+        - AllowCustomDomain
+        - AllowWhiteLabel
+        - AllowPerComponentSubscription
+        - MaxCustomDomains
+        - MaxSubscribers
+        - CurrentUsers
+        - CurrentMonitors
+        - CurrentTasks
+      type: object
+    SwapMonitorInputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/SwapMonitorInputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        pauseMonitorId:
+          description: Monitor ID to pause (optional if under limit)
+          example: mon_abc123
+          type: string
+        unpauseMonitorId:
+          description: Monitor ID to unpause (required)
+          example: mon_xyz789
+          type: string
+      required:
+        - unpauseMonitorId
+      type: object
+    SwapMonitorResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/SwapMonitorResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        message:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - message
+      type: object
+    SwapTaskInputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/SwapTaskInputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        pauseTaskId:
+          description: Task ID to pause (optional if under limit)
+          example: tsk_abc123
+          type: string
+        unpauseTaskId:
+          description: Task ID to unpause (required)
+          example: tsk_xyz789
+          type: string
+      required:
+        - unpauseTaskId
+      type: object
+    SwapTaskResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/SwapTaskResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        message:
+          type: string
+        success:
+          type: boolean
+      required:
+        - success
+        - message
+      type: object
+    SyncOutputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/SyncOutputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        hasActiveSubscription:
+          type: boolean
+      required:
+        - hasActiveSubscription
+      type: object
+    SystemCheckOutputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/SystemCheckOutputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        status:
+          description: system status
+          example: OK
+          type: string
+      required:
+        - status
+      type: object
+    TeamsConfiguration:
+      additionalProperties: false
+      properties:
+        webhookUrl:
+          type: string
+      required:
+        - webhookUrl
+      type: object
+    TelegramConfiguration:
+      additionalProperties: false
+      properties:
+        chatId:
+          type: string
+      required:
+        - chatId
+      type: object
+    TelegramRequest:
+      additionalProperties: true
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/TelegramRequest.json
+          format: uri
+          readOnly: true
+          type: string
+        channel_post:
+          $ref: "#/components/schemas/ChannelPost"
+        message:
+          $ref: "#/components/schemas/Message"
+        update_id:
+          format: int64
+          type: integer
+      required:
+        - update_id
+      type: object
+    TestRequestDnsRecords:
+      additionalProperties: false
+      properties:
+        a:
+          items:
+            type: string
+          nullable: true
+          type: array
+        aaaa:
+          items:
+            type: string
+          nullable: true
+          type: array
+        cname:
+          items:
+            type: string
+          nullable: true
+          type: array
+        mx:
+          items:
+            type: string
+          nullable: true
+          type: array
+        ns:
+          items:
+            type: string
+          nullable: true
+          type: array
+        txt:
+          items:
+            type: string
+          nullable: true
+          type: array
+      required:
+        - a
+        - aaaa
+        - cname
+        - mx
+        - txt
+        - ns
+      type: object
+    TestRequestResult:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/TestRequestResult.json
+          format: uri
+          readOnly: true
+          type: string
+        body:
+          description: Response body, truncated to 64KB
+          type: string
+        bodyTruncated:
+          type: boolean
+        dnsRecords:
+          $ref: "#/components/schemas/TestRequestDnsRecords"
+          description: Only set for type dns
+        error:
+          example: connection refused
+          type: string
+        headers:
+          additionalProperties:
+            type: string
+          description: Response headers, canonical names, multi-values joined with ', '
+          type: object
+        reachable:
+          example: true
+          type: boolean
+        responseTimeMs:
+          example: 123
+          format: int64
+          type: integer
+        sslDaysRemaining:
+          example: 42
+          format: int64
+          type: integer
+        sslIssuer:
+          example: R3
+          type: string
+        sslValidUntil:
+          example: "2026-09-01T12:00:00Z"
+          type: string
+        statusCode:
+          example: 200
+          format: int64
+          type: integer
+      required:
+        - reachable
+        - responseTimeMs
+      type: object
+    TrialOptionsResponse:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/TrialOptionsResponse.json
+          format: uri
+          readOnly: true
+          type: string
+        plans:
+          items:
+            $ref: "#/components/schemas/TrialPlanOption"
+          nullable: true
+          type: array
+      required:
+        - plans
+      type: object
+    TrialPlanOption:
+      additionalProperties: false
+      properties:
+        allowCustomDomain:
+          type: boolean
+        allowWhiteLabel:
+          type: boolean
+        displayPrice:
+          type: string
+        features:
+          items:
+            type: string
+          nullable: true
+          type: array
+        hasTrial:
+          type: boolean
+        id:
+          type: string
+        isEnterprise:
+          type: boolean
+        isRecommended:
+          type: boolean
+        maxCustomDomains:
+          format: int64
+          type: integer
+        maxSubscribers:
+          format: int64
+          type: integer
+        monthlyPrice:
+          format: int64
+          type: integer
+        name:
+          type: string
+        subscriptionId:
+          type: string
+        trialDays:
+          format: int64
+          type: integer
+        yearlyPrice:
+          format: int64
+          type: integer
+      required:
+        - id
+        - name
+        - subscriptionId
+        - displayPrice
+        - monthlyPrice
+        - yearlyPrice
+        - features
+        - hasTrial
+        - trialDays
+        - isRecommended
+        - isEnterprise
+        - allowCustomDomain
+        - allowWhiteLabel
+        - maxCustomDomains
+        - maxSubscribers
+      type: object
+    TrialStatus:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/TrialStatus.json
+          format: uri
+          readOnly: true
+          type: string
+        daysRemaining:
+          format: int64
+          type: integer
+        isInTrial:
+          type: boolean
+        trialEndsAt:
+          format: date-time
+          type: string
+      required:
+        - isInTrial
+        - daysRemaining
+      type: object
+    UnsubscribeFromStatusPageRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/UnsubscribeFromStatusPageRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        token:
+          type: string
+      required:
+        - token
+      type: object
+    UnsubscribeFromStatusPageResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/UnsubscribeFromStatusPageResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        slug:
+          type: string
+        statusPageName:
+          type: string
+      required:
+        - slug
+        - statusPageName
+      type: object
+    UpdateIncidentRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/UpdateIncidentRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        affectedMonitorIds:
+          items:
+            type: string
+          nullable: true
+          type: array
+        affectedScheduledTaskIds:
+          items:
+            type: string
+          nullable: true
+          type: array
+        occurredAt:
+          format: date-time
+          type: string
+        status:
+          type: string
+        statusPageIds:
+          items:
+            type: string
+          nullable: true
+          type: array
+        title:
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+        - title
+        - status
+      type: object
+    UpdateIncidentResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/UpdateIncidentResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        incident:
+          $ref: "#/components/schemas/Incident"
+      required:
+        - incident
+      type: object
+    UpdateIncidentUpdateRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/UpdateIncidentUpdateRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        message:
+          type: string
+        status:
+          type: string
+      required:
+        - status
+        - message
+      type: object
+    UpdateIncidentUpdateResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/UpdateIncidentUpdateResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        incidentUpdate:
+          $ref: "#/components/schemas/IncidentUpdate"
+      required:
+        - incidentUpdate
+      type: object
+    UpdateStatusPageResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/UpdateStatusPageResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        status_page:
+          $ref: "#/components/schemas/StatusPage"
+      required:
+        - status_page
+      type: object
+    UptimeSeries:
+      additionalProperties: false
+      properties:
+        time:
+          description: unix timestamp
+          example: 1672531200
+          format: int64
+          type: integer
+        uptime:
+          format: float
+          type: number
+      required:
+        - time
+        - uptime
+      type: object
+    UserSettings:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/UserSettings.json
+          format: uri
+          readOnly: true
+          type: string
+        hasCompletedSidebarOnboarding:
+          description: whether user has completed sidebar onboarding
+          example: true
+          type: boolean
+      type: object
+    Variable:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/Variable.json
+          format: uri
+          readOnly: true
+          type: string
+        id:
+          example: var_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        key:
+          example: API_KEY
+          type: string
+        secure:
+          example: true
+          type: boolean
+        value:
+          example: secret-value
+          type: string
+      required:
+        - key
+        - secure
+      type: object
+    WaitingListEntry:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/WaitingListEntry.json
+          format: uri
+          readOnly: true
+          type: string
+        created_at:
+          example: "2024-11-28T15:04:05Z"
+          format: date-time
+          type: string
+        email:
+          example: user@example.com
+          type: string
+        id:
+          example: wl_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        updated_at:
+          example: "2024-11-28T15:04:05Z"
+          format: date-time
+          type: string
+      required:
+        - email
+      type: object
+    WebhookConfiguration:
+      additionalProperties: false
+      properties:
+        webhookUrl:
+          type: string
+      required:
+        - webhookUrl
+      type: object
+    WhoAmIOutputBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/WhoAmIOutputBody.json
+          format: uri
+          readOnly: true
+          type: string
+        activeSubscription:
+          description: true if the organization has an active subscription
+          type: boolean
+        hasStripeCustomer:
+          description: true if the organization has a Stripe customer (for billing history)
+          type: boolean
+        isFreePlan:
+          description: true if the organization is on the free plan
+          type: boolean
+        isInTrial:
+          description: true if the organization is in a trial period
+          type: boolean
+        organizationId:
+          description: active organization id
+          example: org_2gXP92jmF1kFvALmhYiCnuoP791
+          type: string
+        subscriptionName:
+          description: name of the current subscription plan
+          example: Pro
+          type: string
+        trialDaysRemaining:
+          description: number of days remaining in trial, 0 if not in trial
+          format: int64
+          type: integer
+        userId:
+          description: user id
+          example: user_2aAzBP9L6fe32FQWiy4Le92SVkF
+          type: string
+        user_settings:
+          $ref: "#/components/schemas/UserSettings"
+          description: user settings object
+      required:
+        - userId
+        - activeSubscription
+        - isFreePlan
+        - isInTrial
+        - trialDaysRemaining
+        - hasStripeCustomer
+      type: object
+  securitySchemes:
+    apiKey:
+      bearerFormat: API key
+      description: Organization API key (ue_live_...), created via POST /v1/api-keys or in the app settings.
+      scheme: bearer
+      type: http
+    jwt:
+      bearerFormat: JWT
+      scheme: bearer
+      type: http
+info:
+  title: UptimeEye Management API
+  version: 1.0.0
+openapi: 3.0.3
+paths:
+  /internal/monitors:
+    post:
+      description: Internal endpoint to retrieve monitors by IDs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetInternalMonitorsRequestBody"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetInternalMonitorsResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - internal
+  /internal/monitors/next:
+    get:
+      description: Internal endpoint to retrieve next monitors to execute
+      parameters:
+        - example: eu-central-1
+          explode: false
+          in: query
+          name: location
+          schema:
+            example: eu-central-1
+            type: string
+        - explode: false
+          in: query
+          name: limit
+          schema:
+            default: 20
+            format: int64
+            maximum: 1000
+            minimum: 1
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetNextMonitorsToExecuteResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - internal
+  /internal/monitors/result:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostMonitorExecutionResultRequestBody"
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - internal
+  /v1/api-keys:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApiKeysResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      tags:
+        - api-key
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostApiKeyRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiKeyCreated"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      tags:
+        - api-key
+  /v1/api-keys/{apiKeyId}:
+    delete:
+      parameters:
+        - in: path
+          name: apiKeyId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteApiKeyResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      tags:
+        - api-key
+  /v1/beat/{scheduledTaskId}:
+    get:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+    head:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+    post:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+  /v1/beat/{scheduledTaskId}/fail:
+    get:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+    head:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+    post:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+  /v1/beat/{scheduledTaskId}/start:
+    get:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+    head:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+    post:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+  /v1/beat/{scheduledTaskId}/success:
+    get:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+    head:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+    post:
+      parameters:
+        - in: header
+          name: User-Agent
+          schema:
+            type: string
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - beat
+  /v1/chat/conversations:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetChatConversationsResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - chat
+  /v1/chat/conversations/{conversationId}:
+    delete:
+      parameters:
+        - in: path
+          name: conversationId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteChatConversationResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - chat
+    get:
+      parameters:
+        - in: path
+          name: conversationId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatConversationDetail"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - chat
+  /v1/incidents:
+    get:
+      parameters:
+        - explode: false
+          in: query
+          name: from
+          schema:
+            type: string
+        - explode: false
+          in: query
+          name: to
+          schema:
+            type: string
+        - explode: false
+          in: query
+          name: status
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetIncidentsResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - incidents
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateIncidentRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateIncidentResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - incidents
+  /v1/incidents/{incidentId}:
+    delete:
+      parameters:
+        - in: path
+          name: incidentId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - incidents
+    get:
+      parameters:
+        - in: path
+          name: incidentId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Incident"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - incidents
+    put:
+      parameters:
+        - example: inc_123456
+          in: path
+          name: incidentId
+          required: true
+          schema:
+            example: inc_123456
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateIncidentRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateIncidentResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - incidents
+  /v1/incidents/{incidentId}/updates:
+    post:
+      parameters:
+        - in: path
+          name: incidentId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateIncidentUpdateRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateIncidentUpdateResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - incidents
+  /v1/incidents/{incidentId}/updates/{updateId}:
+    delete:
+      parameters:
+        - in: path
+          name: incidentId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: updateId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - incidents
+    put:
+      parameters:
+        - in: path
+          name: incidentId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: updateId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateIncidentUpdateRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateIncidentUpdateResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - incidents
+  /v1/locations:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocationsResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - locations
+  /v1/monitors:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Monitor"
+                nullable: true
+                type: array
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Monitor"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Monitor"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/health-details:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/MonitorHealth"
+                nullable: true
+                type: array
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/limits:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonitorLimits"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}:
+    delete:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+    get:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Monitor"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+    put:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Monitor"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Monitor"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}/executions:
+    get:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+        - explode: false
+          in: query
+          name: limit
+          schema:
+            default: 20
+            format: int64
+            type: integer
+        - explode: false
+          in: query
+          name: status
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMonitorExecutionsOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}/executions/last:
+    get:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExecutionResponse"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}/executions/{executionId}:
+    get:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: executionId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExecutionResponse"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}/favicon:
+    delete:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Monitor"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}/favicon/refresh:
+    post:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Monitor"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}/pause:
+    put:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}/resume:
+    put:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}/runNow:
+    post:
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}/statistics:
+    get:
+      parameters:
+        - example: "2023-01-01T00:00:00Z"
+          explode: false
+          in: query
+          name: from
+          schema:
+            example: "2023-01-01T00:00:00Z"
+            type: string
+        - example: "2023-01-02T00:00:00Z"
+          explode: false
+          in: query
+          name: to
+          schema:
+            example: "2023-01-02T00:00:00Z"
+            type: string
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonitorStatistics"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/monitors/{monitorId}/timeSeries:
+    get:
+      parameters:
+        - example: "2023-01-01T00:00:00Z"
+          explode: false
+          in: query
+          name: from
+          schema:
+            example: "2023-01-01T00:00:00Z"
+            type: string
+        - example: "2023-01-02T00:00:00Z"
+          explode: false
+          in: query
+          name: to
+          schema:
+            example: "2023-01-02T00:00:00Z"
+            type: string
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonitorTimeSeriesResponse"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - monitors
+  /v1/notification-channels:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetNotificationChannelsResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationChannel"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationChannel"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+  /v1/notification-channels/integrations:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAvailableNotificationIntegrationsResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+  /v1/notification-channels/{notificationChannelId}:
+    delete:
+      parameters:
+        - in: path
+          name: notificationChannelId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+    get:
+      parameters:
+        - in: path
+          name: notificationChannelId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationChannel"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+    put:
+      parameters:
+        - in: path
+          name: notificationChannelId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationChannel"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationChannel"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+  /v1/notification-channels/{notificationChannelId}/details:
+    get:
+      parameters:
+        - in: path
+          name: notificationChannelId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationChannelDetails"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+  /v1/notification-channels/{notificationChannelId}/integrations:
+    get:
+      parameters:
+        - in: path
+          name: notificationChannelId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetNotificationIntegrationsResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+    post:
+      parameters:
+        - in: path
+          name: notificationChannelId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationIntegration"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationIntegration"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+    put:
+      parameters:
+        - in: path
+          name: notificationChannelId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationIntegration"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationIntegration"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+  /v1/notification-channels/{notificationChannelId}/integrations/{integrationId}:
+    delete:
+      parameters:
+        - in: path
+          name: notificationChannelId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: integrationId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+    get:
+      parameters:
+        - in: path
+          name: notificationChannelId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: integrationId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationIntegration"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+  /v1/notification-channels/{notificationChannelId}/test-notification:
+    post:
+      parameters:
+        - in: path
+          name: notificationChannelId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+          headers:
+            NotificationChannelId:
+              schema:
+                type: string
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - notification
+  /v1/onboarding/organization/selected:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OnboardingOrganizationSelection"
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - onboarding
+  /v1/onboarding/user:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OnboardingUserInformation"
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - onboarding
+  /v1/organization/summary:
+    get:
+      operationId: get-organization-summary
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizationSummary"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - organization
+  /v1/proxy:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProxyRequest"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProxyResponse"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - proxy
+  /v1/resultRedirect/{executionId}:
+    get:
+      parameters:
+        - in: path
+          name: executionId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HandleGetResultRedirectOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - others
+  /v1/scheduled-tasks:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ScheduledTask"
+                nullable: true
+                type: array
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduledTask"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduledTask"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+  /v1/scheduled-tasks/health-details:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetScheduledTasksWithHealthDetailsOutputResponse"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+  /v1/scheduled-tasks/limits:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduledTaskLimits"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+  /v1/scheduled-tasks/{scheduledTaskId}:
+    delete:
+      parameters:
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+    get:
+      parameters:
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduledTask"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+    put:
+      parameters:
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduledTask"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduledTask"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+  /v1/scheduled-tasks/{scheduledTaskId}/events:
+    get:
+      parameters:
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+        - example: "2023-01-01T00:00:00Z"
+          explode: false
+          in: query
+          name: from
+          schema:
+            example: "2023-01-01T00:00:00Z"
+            type: string
+        - example: "2023-01-02T00:00:00Z"
+          explode: false
+          in: query
+          name: to
+          schema:
+            example: "2023-01-02T00:00:00Z"
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetScheduledTaskEventsResponse"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+  /v1/scheduled-tasks/{scheduledTaskId}/pause:
+    put:
+      parameters:
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+  /v1/scheduled-tasks/{scheduledTaskId}/resume:
+    put:
+      parameters:
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+  /v1/scheduled-tasks/{scheduledTaskId}/stats:
+    get:
+      parameters:
+        - in: path
+          name: scheduledTaskId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduledTaskStatistics"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - scheduled-tasks
+  /v1/status-pages:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetStatusPagesResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-pages
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatusPage"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateStatusPageResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-pages
+  /v1/status-pages/by-host/{host}:
+    get:
+      parameters:
+        - in: path
+          name: host
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResolveHostResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - status-page-domains
+  /v1/status-pages/slug/{slug}:
+    get:
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusPageRouteCheckResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - status-pages
+  /v1/status-pages/subscribers/confirm:
+    post:
+      parameters:
+        - in: header
+          name: X-Real-IP
+          schema:
+            type: string
+        - in: header
+          name: X-Forwarded-For
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmStatusPageSubscriptionRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfirmStatusPageSubscriptionResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - status-page-subscribers
+  /v1/status-pages/subscribers/unsubscribe:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UnsubscribeFromStatusPageRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnsubscribeFromStatusPageResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - status-page-subscribers
+  /v1/status-pages/{statusPageId}:
+    delete:
+      parameters:
+        - in: path
+          name: statusPageId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-pages
+    get:
+      parameters:
+        - in: path
+          name: statusPageId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusPage"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - status-pages
+    put:
+      parameters:
+        - example: spg_123456
+          in: path
+          name: statusPageId
+          required: true
+          schema:
+            example: spg_123456
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatusPage"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateStatusPageResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-pages
+  /v1/status-pages/{statusPageId}/data:
+    get:
+      parameters:
+        - example: "2023-01-01T00:00:00Z"
+          explode: false
+          in: query
+          name: from
+          schema:
+            example: "2023-01-01T00:00:00Z"
+            type: string
+        - example: "2023-01-02T00:00:00Z"
+          explode: false
+          in: query
+          name: to
+          schema:
+            example: "2023-01-02T00:00:00Z"
+            type: string
+        - in: path
+          name: statusPageId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusPageData"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - status-pages
+  /v1/status-pages/{statusPageId}/domains:
+    get:
+      parameters:
+        - in: path
+          name: statusPageId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListStatusPageDomainsResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-page-domains
+    post:
+      parameters:
+        - example: statp_123
+          in: path
+          name: statusPageId
+          required: true
+          schema:
+            example: statp_123
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddStatusPageDomainRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AddStatusPageDomainResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-page-domains
+  /v1/status-pages/{statusPageId}/domains/{domainId}:
+    delete:
+      parameters:
+        - in: path
+          name: statusPageId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: domainId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-page-domains
+  /v1/status-pages/{statusPageId}/incidents:
+    get:
+      parameters:
+        - in: path
+          name: statusPageId
+          required: true
+          schema:
+            type: string
+        - explode: false
+          in: query
+          name: from
+          schema:
+            type: string
+        - explode: false
+          in: query
+          name: to
+          schema:
+            type: string
+        - explode: false
+          in: query
+          name: limit
+          schema:
+            default: 5
+            format: int64
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetStatusPageIncidentsResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - incidents
+  /v1/status-pages/{statusPageId}/report-schedule:
+    get:
+      parameters:
+        - in: path
+          name: statusPageId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetReportScheduleResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-page-reports
+    put:
+      parameters:
+        - in: path
+          name: statusPageId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportSchedule"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutReportScheduleResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-page-reports
+  /v1/status-pages/{statusPageId}/subscribers:
+    get:
+      parameters:
+        - example: statp_123456
+          in: path
+          name: statusPageId
+          required: true
+          schema:
+            example: statp_123456
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListStatusPageSubscribersResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-page-subscribers
+    post:
+      parameters:
+        - example: statp_123456
+          in: path
+          name: statusPageId
+          required: true
+          schema:
+            example: statp_123456
+            type: string
+        - in: header
+          name: X-Real-IP
+          schema:
+            type: string
+        - in: header
+          name: X-Forwarded-For
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscribeToStatusPageRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscribeToStatusPageResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - status-page-subscribers
+  /v1/status-pages/{statusPageId}/subscribers/{subscriberId}:
+    delete:
+      parameters:
+        - in: path
+          name: statusPageId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: subscriberId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - status-page-subscribers
+  /v1/stripe/checkout:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckoutRequest"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutResponse"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - stripe
+  /v1/stripe/customer-portal:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerPortalRequest"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerPortalResponse"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - stripe
+  /v1/stripe/sync:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SyncOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - stripe
+  /v1/subscription:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriptionDetails"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - subscription
+  /v1/subscription/all:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Subscription"
+                nullable: true
+                type: array
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - subscription
+  /v1/subscription/downgrade:
+    post:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DowngradeToFreeResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - subscription
+  /v1/subscription/enforcement-preview:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EnforcementSummary"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - subscription
+  /v1/subscription/swap-monitor:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SwapMonitorInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SwapMonitorResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - subscription
+  /v1/subscription/swap-task:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SwapTaskInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SwapTaskResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - subscription
+  /v1/subscription/trial-options:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrialOptionsResponse"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - subscription
+  /v1/subscription/trial/start:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StartTrialInputBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StartTrialResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - subscription
+  /v1/subscription/trial/status:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrialStatus"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - subscription
+  /v1/system-check:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SystemCheckOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+  /v1/tools/site-check:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostSiteCheckRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteCheckResult"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - tools
+  /v1/tools/test-request:
+    post:
+      operationId: post-test-request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostTestRequestRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestRequestResult"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - tools
+  /v1/user/settings:
+    patch:
+      description: Updates specific keys in the user_settings JSONB field. Only allows hasCompletedSidebarOnboarding key with primitive values at the moment.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserSettings"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - user
+  /v1/variables:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetVariablesResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - variable
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostVariableRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Variable"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - variable
+  /v1/variables/{variableId}:
+    delete:
+      parameters:
+        - in: path
+          name: variableId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteVariableResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - variable
+    get:
+      parameters:
+        - in: path
+          name: variableId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Variable"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - variable
+    put:
+      parameters:
+        - in: path
+          name: variableId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutVariableRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Variable"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      tags:
+        - variable
+  /v1/waiting-list:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostWaitingListRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WaitingListEntry"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      tags:
+        - waiting-list
+  /v1/whoami:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WhoAmIOutputBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+  /webhook/checkout:
+    post:
+      parameters:
+        - in: header
+          name: stripe-signature
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StripeEvent"
+          application/octet-stream:
+            schema:
+              contentMediaType: application/octet-stream
+              format: binary
+              type: string
+        required: true
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+  /webhook/clerk:
+    post:
+      parameters:
+        - in: header
+          name: svix-signature
+          schema:
+            type: string
+        - in: header
+          name: svix-timestamp
+          schema:
+            type: string
+        - in: header
+          name: svix-id
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClerkWebhookBody"
+          application/octet-stream:
+            schema:
+              contentMediaType: application/octet-stream
+              format: binary
+              type: string
+        required: true
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+  /webhook/telegram:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TelegramRequest"
+          application/octet-stream:
+            schema:
+              contentMediaType: application/octet-stream
+              format: binary
+              type: string
+        required: true
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+security:
+  - jwt: []
+  - apiKey: []
+servers:
+  - url: https://api.uptimeeye.com
