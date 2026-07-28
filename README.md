@@ -1,5 +1,7 @@
 # Terraform Provider for UptimeEye
 
+Published on the [Terraform Registry](https://registry.terraform.io/providers/uptimeeye/uptimeeye/latest).
+
 Manage [UptimeEye](https://uptimeeye.com) monitors, scheduled tasks (heartbeats),
 notification channels, status pages and variables declaratively with Terraform
 (or OpenTofu).
