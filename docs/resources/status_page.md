@@ -14,10 +14,9 @@ A public or private status page. Sections (with their monitors and scheduled tas
 
 ```terraform
 resource "uptimeeye_status_page" "public" {
-  name      = "Example Status"
-  slug      = "example-status"
-  is_public = true
-  theme     = "auto"
+  name  = "Example Status"
+  slug  = "example-status"
+  theme = "auto"
 
   sections = [{
     name = "API"
@@ -40,7 +39,6 @@ resource "uptimeeye_status_page" "public" {
 
 - `brand_color` (String) Brand accent color (e.g. `#1a2b3c`).
 - `hide_powered_by` (Boolean) Hide the "powered by UptimeEye" footer (requires a plan that allows it).
-- `is_public` (Boolean) Whether the page is publicly reachable.
 - `logo_url` (String) URL of the logo shown on the page.
 - `sections` (Attributes List) Ordered sections of the page. Each section groups monitors and scheduled tasks. (see [below for nested schema](#nestedatt--sections))
 - `subscriptions_enabled` (Boolean) Allow visitors to subscribe to status updates.

@@ -1,8 +1,7 @@
 resource "uptimeeye_status_page" "public" {
-  name      = "Example Status"
-  slug      = "example-status"
-  is_public = true
-  theme     = "auto"
+  name  = "Example Status"
+  slug  = "example-status"
+  theme = "auto"
 
   sections = [{
     name = "API"

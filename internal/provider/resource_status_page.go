@@ -37,7 +37,6 @@ type StatusPageResourceModel struct {
 	Id                   types.String `tfsdk:"id"`
 	Name                 types.String `tfsdk:"name"`
 	Slug                 types.String `tfsdk:"slug"`
-	IsPublic             types.Bool   `tfsdk:"is_public"`
 	Tags                 types.List   `tfsdk:"tags"`
 	Theme                types.String `tfsdk:"theme"`
 	LogoUrl              types.String `tfsdk:"logo_url"`
@@ -115,12 +114,6 @@ func (r *StatusPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"slug": schema.StringAttribute{
 				MarkdownDescription: "URL slug under which the page is served.",
 				Required:            true,
-			},
-			"is_public": schema.BoolAttribute{
-				MarkdownDescription: "Whether the page is publicly reachable.",
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(false),
 			},
 			"tags": schema.ListAttribute{
 				MarkdownDescription: "Tags for organizing status pages.",
@@ -278,9 +271,11 @@ func buildStatusPageBody(ctx context.Context, diags *diag.Diagnostics, plan *Sta
 	}
 
 	return apiclient.StatusPage{
-		Name:                 plan.Name.ValueString(),
-		Slug:                 plan.Slug.ValueString(),
-		IsPublic:             plan.IsPublic.ValueBool(),
+		Name: plan.Name.ValueString(),
+		Slug: plan.Slug.ValueString(),
+		// The backend forces status pages to be public; the DTO field only
+		// remains for API compatibility and is not part of the schema.
+		IsPublic: true,
 		Tags:                 ptr(listToStringSlice(ctx, diags, plan.Tags)),
 		Theme:                ptr(apiclient.StatusPageTheme(plan.Theme.ValueString())),
 		LogoUrl:              ptr(plan.LogoUrl.ValueString()),
@@ -299,7 +294,6 @@ func statusPageToState(ctx context.Context, diags *diag.Diagnostics, page *apicl
 	}
 	state.Name = types.StringValue(page.Name)
 	state.Slug = types.StringValue(page.Slug)
-	state.IsPublic = types.BoolValue(page.IsPublic)
 	state.Tags = stringSliceToList(ctx, diags, page.Tags)
 	state.Theme = types.StringValue(string(deref(page.Theme, apiclient.Dark)))
 	state.LogoUrl = types.StringValue(deref(page.LogoUrl, ""))
