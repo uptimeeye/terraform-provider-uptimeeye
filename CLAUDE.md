@@ -48,3 +48,17 @@ repos, so releases run on a GitHub push-mirror: tag on GitLab → mirror forward
 → .github/workflows/release.yml (goreleaser + GPG). Registry namespace = GitHub
 owner; adjust `main.go` Address + examples if the owner is not `uptimeeye`.
 Details in README "Hosting & Releasing".
+
+## Ops vault (company memory)
+
+Strategy, marketing, experiments, decisions, reviews and the inventory of all initiatives live in the LaunchX
+**ops vault**: `~/dev/privat/launchx/ops/` (GitLab `launchx/ops`, opened in Obsidian; rules in its `CLAUDE.md`;
+clone `git@gitlab.com:launchx/ops.git` if it is missing on this machine). Product hub for this repo: `ops/10-Produkte/UptimeEye/UptimeEye.md`.
+- Before non-trivial work, read the product hub and the open levers for this app (`ops/20-Hebel/`).
+- New facts that are not code — numbers (with date and source), experiment results, marketing findings, plan
+  changes, started or abandoned initiatives — go into the vault, not into loose `.md` files in this repo:
+  hub = current state, `20-Hebel/` = experiments, `50-Reviews/` = run reports, `60-Ideen/` = ideas,
+  `40-Entscheidungen/` only with `status: vorgeschlagen` (humans decide), `Anlaeufe.md` = initiative status.
+- Technical docs (API contracts, runbooks, this file) stay in the repo; link them from the hub.
+- Vault edits: `git -C ~/dev/privat/launchx/ops pull --rebase` first, commit as `docs(ops): …`, push only
+  when the task explicitly allows it.
