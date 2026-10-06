@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 Terraform provider for UptimeEye, built on terraform-plugin-framework (NOT the
 legacy SDKv2). Companion backend: `../ms-management` (Go/Huma API service).
