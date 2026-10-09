@@ -1,7 +1,7 @@
 # AGENTS.md
 
 Terraform provider for UptimeEye, built on terraform-plugin-framework (NOT the
-legacy SDKv2). Companion backend: `../ms-management` (Go/Huma API service).
+legacy SDKv2). Companion backend: `../uptimeeye/apps/ms-management` (Go/Huma API service).
 
 ## Commands
 
@@ -9,7 +9,7 @@ legacy SDKv2). Companion backend: `../ms-management` (Go/Huma API service).
 make build            # compile
 make test             # unit tests
 make testacc          # acceptance tests (needs UPTIMEEYE_API_KEY, UPTIMEEYE_ENDPOINT)
-make generate-client  # re-export OpenAPI spec from ../ms-management, regen internal/apiclient
+make generate-client  # re-export OpenAPI spec from ../uptimeeye/apps/ms-management, regen internal/apiclient
 make docs             # regenerate docs/ via tfplugindocs from schema + examples/
 ```
 
@@ -17,7 +17,7 @@ make docs             # regenerate docs/ via tfplugindocs from schema + examples
 
 - `internal/apiclient/` — GENERATED (oapi-codegen) from `openapi.yaml`; never edit
   by hand, run `make generate-client` after backend API changes. The spec comes
-  from `../ms-management` via `go run ./cmd/openapi -v30` (no server/DB needed).
+  from `../uptimeeye/apps/ms-management` via `go run ./cmd/openapi -v30` (no server/DB needed).
 - `internal/provider/` — provider + one file per resource/data source.
   - Shared helpers in `helpers.go`: `apiCallFailed`/`checkStatus`/`isNotFound`
     for API error handling, `stringSliceToList`/`listToStringSlice`, `ptr`/`deref`.

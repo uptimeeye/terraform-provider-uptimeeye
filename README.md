@@ -81,7 +81,7 @@ All resources support `terraform import`; nested resources use composite IDs
 ```sh
 make build            # compile
 make test             # unit tests
-make generate-client  # re-export OpenAPI spec from ../ms-management and regenerate internal/apiclient
+make generate-client  # re-export OpenAPI spec from ../uptimeeye/apps/ms-management and regenerate internal/apiclient
 make docs             # regenerate docs/ from schema + examples/
 ```
 

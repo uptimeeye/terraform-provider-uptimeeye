@@ -17,9 +17,12 @@ testacc:
 	TF_ACC=1 go test ./internal/provider/ -v -timeout 120m $(TESTARGS)
 
 # Re-export the OpenAPI spec from the ms-management source tree (no running
-# server needed) and regenerate the Go client from it.
+# server needed) and regenerate the Go client from it. ms-management lives in
+# the UptimeEye monorepo, cloned as a sibling of this repo.
+MS_MANAGEMENT ?= ../uptimeeye/apps/ms-management
+
 generate-spec:
-	cd ../ms-management && go run ./cmd/openapi -v30 > ../terraform-provider-uptimeeye/openapi.yaml
+	cd $(MS_MANAGEMENT) && go run ./cmd/openapi -v30 > $(CURDIR)/openapi.yaml
 
 generate-client: generate-spec
 	mkdir -p internal/apiclient
