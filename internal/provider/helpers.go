@@ -4,11 +4,14 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"regexp"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"gitlab.com/uptimeeye/terraform-provider-uptimeeye/internal/apiclient"
 )
@@ -121,4 +124,21 @@ func deref[T any](p *T, fallback T) T {
 		return fallback
 	}
 	return *p
+}
+
+// nameValidators mirror the API's rule for the name of a monitor, scheduled
+// task, notification channel or status page: 1 to 80 characters (the API
+// answers 422 otherwise).
+func nameValidators() []validator.String {
+	return []validator.String{stringvalidator.UTF8LengthBetween(1, 80)}
+}
+
+// webhookUrlValidators mirror the API's rule for the webhook URL of a Teams,
+// Discord or webhook integration: an https URL with a hostname, at most 2048
+// characters.
+func webhookUrlValidators() []validator.String {
+	return []validator.String{
+		stringvalidator.UTF8LengthAtMost(2048),
+		stringvalidator.RegexMatches(regexp.MustCompile(`^https://[^/?#\s]+`), "must be an https URL with a hostname, e.g. https://hooks.example.com/alerts"),
+	}
 }

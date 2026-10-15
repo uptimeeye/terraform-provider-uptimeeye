@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"regexp"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -108,12 +109,16 @@ func (r *StatusPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Display name of the status page.",
+				MarkdownDescription: "Display name of the status page, 1 to 80 characters.",
 				Required:            true,
+				Validators:          nameValidators(),
 			},
 			"slug": schema.StringAttribute{
-				MarkdownDescription: "URL slug under which the page is served.",
+				MarkdownDescription: "URL slug under which the page is served: 3 to 63 lowercase letters, digits and hyphens (e.g. `acme-status`).",
 				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9-]{3,63}$`), "must be 3 to 63 lowercase letters, digits and hyphens, e.g. acme-status"),
+				},
 			},
 			"tags": schema.ListAttribute{
 				MarkdownDescription: "Tags for organizing status pages.",

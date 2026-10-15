@@ -153,8 +153,9 @@ func (r *NotificationIntegrationResource) Schema(ctx context.Context, req resour
 				Optional:            true,
 				Attributes: map[string]schema.Attribute{
 					"webhook_url": schema.StringAttribute{
-						MarkdownDescription: "Teams incoming webhook URL.",
+						MarkdownDescription: "Teams incoming webhook URL (https).",
 						Required:            true,
+						Validators:          webhookUrlValidators(),
 						Sensitive:           true,
 					},
 				},
@@ -164,8 +165,9 @@ func (r *NotificationIntegrationResource) Schema(ctx context.Context, req resour
 				Optional:            true,
 				Attributes: map[string]schema.Attribute{
 					"webhook_url": schema.StringAttribute{
-						MarkdownDescription: "Discord webhook URL.",
+						MarkdownDescription: "Discord webhook URL (https).",
 						Required:            true,
+						Validators:          webhookUrlValidators(),
 						Sensitive:           true,
 					},
 				},
@@ -189,8 +191,9 @@ func (r *NotificationIntegrationResource) Schema(ctx context.Context, req resour
 				Optional:            true,
 				Attributes: map[string]schema.Attribute{
 					"webhook_url": schema.StringAttribute{
-						MarkdownDescription: "URL that receives alert payloads.",
+						MarkdownDescription: "https URL that receives alert payloads.",
 						Required:            true,
+						Validators:          webhookUrlValidators(),
 					},
 				},
 			},

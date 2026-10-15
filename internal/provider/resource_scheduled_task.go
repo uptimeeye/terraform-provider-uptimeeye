@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -82,16 +83,18 @@ func (r *ScheduledTaskResource) Schema(ctx context.Context, req resource.SchemaR
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Display name of the scheduled task.",
+				MarkdownDescription: "Display name of the scheduled task, 1 to 80 characters.",
 				Required:            true,
+				Validators:          nameValidators(),
 			},
 			"notification_channel_id": schema.StringAttribute{
 				MarkdownDescription: "ID of the notification channel to alert when the task misses its schedule.",
 				Required:            true,
 			},
 			"grace_period": schema.Int64Attribute{
-				MarkdownDescription: "Grace period in minutes before a missed ping triggers an alert.",
+				MarkdownDescription: "Grace period in minutes before a missed ping triggers an alert, 0 to 1440.",
 				Required:            true,
+				Validators:          []validator.Int64{int64validator.Between(0, 1440)},
 			},
 			"tags": schema.ListAttribute{
 				MarkdownDescription: "Tags for organizing scheduled tasks.",

@@ -26,8 +26,7 @@ resource "uptimeeye_monitor" "api" {
       method = "GET"
     }
     asserts = [{
-      type     = "body"
-      property = "statusCode"
+      type     = "statusCode"
       operator = "is"
       expected = "200"
     }]
@@ -35,7 +34,7 @@ resource "uptimeeye_monitor" "api" {
 
   options = {
     tick_every = 60
-    timeout    = 5000
+    timeout    = 30 # seconds
   }
 }
 ```
@@ -46,7 +45,7 @@ resource "uptimeeye_monitor" "api" {
 ### Required
 
 - `locations` (List of String) Locations the monitor runs from.
-- `name` (String) Display name of the monitor.
+- `name` (String) Display name of the monitor, 1 to 80 characters.
 - `notification_channel_id` (String) ID of the notification channel that receives alerts for this monitor.
 - `options` (Attributes) Scheduling and alerting options. (see [below for nested schema](#nestedatt--options))
 - `steps` (Attributes List) Test steps executed in order. (see [below for nested schema](#nestedatt--steps))
@@ -65,14 +64,14 @@ resource "uptimeeye_monitor" "api" {
 
 Required:
 
-- `tick_every` (Number) Check frequency in seconds.
-- `timeout` (Number) How long to wait for a response in seconds.
+- `tick_every` (Number) Check frequency in seconds, 30 to 86400. The minimum interval also depends on the plan.
+- `timeout` (Number) How long to wait for a response in seconds (not milliseconds), at least 5.
 
 Optional:
 
-- `failure_threshold` (Number) Number of consecutive failures before triggering an alarm.
+- `failure_threshold` (Number) Number of consecutive failures before triggering an alarm, 1 to 10.
 - `follow_redirects` (Boolean) Whether to follow HTTP redirects.
-- `location_threshold` (Number) Number of locations that must fail before triggering an alarm.
+- `location_threshold` (Number) Number of locations that must fail before triggering an alarm, 1 to 10 and at most the number of `locations`.
 
 
 <a id="nestedatt--steps"></a>
@@ -81,7 +80,7 @@ Optional:
 Required:
 
 - `request` (Attributes) Request executed by this step. (see [below for nested schema](#nestedatt--steps--request))
-- `type` (String) Step type.
+- `type` (String) Step type. One of `http`, `dns`, `icmp`, `tcp`.
 
 Optional:
 
@@ -94,7 +93,7 @@ Optional:
 
 Required:
 
-- `url` (String) Target URL (or host for dns/icmp steps).
+- `url` (String) Target of the step, at most 2048 characters. `http`: an http(s) URL with a hostname (`https://example.com/health`; a bare domain is rejected); `dns`, `icmp`: a hostname or IP address; `tcp`: `host:port`. May contain `{{variable}}` tokens.
 
 Optional:
 

@@ -75,8 +75,7 @@ resource "uptimeeye_monitor" "api" {
       }]
     }
     asserts = [{
-      type     = "body"
-      property = "statusCode"
+      type     = "statusCode"
       operator = "is"
       expected = "200"
     }]
@@ -84,7 +83,7 @@ resource "uptimeeye_monitor" "api" {
 
   options = {
     tick_every        = 60
-    timeout           = 5000
+    timeout           = 30 # seconds
     failure_threshold = 2
   }
 }

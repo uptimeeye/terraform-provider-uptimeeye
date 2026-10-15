@@ -47,8 +47,9 @@ func (r *NotificationChannelResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Display name of the channel.",
+				MarkdownDescription: "Display name of the channel, 1 to 80 characters.",
 				Required:            true,
+				Validators:          nameValidators(),
 			},
 			"tags": schema.ListAttribute{
 				MarkdownDescription: "Tags for organizing channels.",

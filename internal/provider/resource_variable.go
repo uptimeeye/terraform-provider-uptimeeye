@@ -2,7 +2,9 @@ package provider
 
 import (
 	"context"
+	"regexp"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -10,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"gitlab.com/uptimeeye/terraform-provider-uptimeeye/internal/apiclient"
 )
@@ -51,12 +54,16 @@ func (r *VariableResource) Schema(ctx context.Context, req resource.SchemaReques
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"key": schema.StringAttribute{
-				MarkdownDescription: "Variable name as referenced in monitor steps.",
+				MarkdownDescription: "Variable name as referenced in monitor steps (`{{KEY}}`, case-sensitive): letters, digits and underscores, not starting with a digit, at most 64 characters.",
 				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z_][A-Za-z0-9_]{0,63}$`), "must be letters, digits and underscores, not start with a digit and be at most 64 characters, e.g. API_KEY"),
+				},
 			},
 			"value": schema.StringAttribute{
-				MarkdownDescription: "Variable value. Always stored encrypted at rest by UptimeEye; additionally marked sensitive in Terraform output.",
+				MarkdownDescription: "Variable value, at most 255 characters. Always stored encrypted at rest by UptimeEye; additionally marked sensitive in Terraform output.",
 				Required:            true,
+				Validators:          []validator.String{stringvalidator.UTF8LengthAtMost(255)},
 				Sensitive:           true,
 			},
 			"secure": schema.BoolAttribute{

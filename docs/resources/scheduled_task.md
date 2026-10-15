@@ -32,7 +32,7 @@ resource "uptimeeye_scheduled_task" "queue_worker" {
   grace_period            = 5
 
   simple_task = {
-    interval_type  = "minutes"
+    interval_type  = "minute"
     interval_value = 15
   }
 }
@@ -43,8 +43,8 @@ resource "uptimeeye_scheduled_task" "queue_worker" {
 
 ### Required
 
-- `grace_period` (Number) Grace period in minutes before a missed ping triggers an alert.
-- `name` (String) Display name of the scheduled task.
+- `grace_period` (Number) Grace period in minutes before a missed ping triggers an alert, 0 to 1440.
+- `name` (String) Display name of the scheduled task, 1 to 80 characters.
 - `notification_channel_id` (String) ID of the notification channel to alert when the task misses its schedule.
 
 ### Optional
