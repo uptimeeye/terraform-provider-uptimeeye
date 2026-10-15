@@ -17,7 +17,7 @@ resource "uptimeeye_scheduled_task" "queue_worker" {
   grace_period            = 5
 
   simple_task = {
-    interval_type  = "minutes"
+    interval_type  = "minute"
     interval_value = 15
   }
 }

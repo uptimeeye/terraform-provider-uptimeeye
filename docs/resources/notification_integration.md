@@ -60,7 +60,7 @@ resource "uptimeeye_notification_integration" "pagerduty" {
 
 Required:
 
-- `webhook_url` (String, Sensitive) Discord webhook URL.
+- `webhook_url` (String, Sensitive) Discord webhook URL (https).
 
 
 <a id="nestedatt--email"></a>
@@ -97,7 +97,7 @@ Required:
 
 Required:
 
-- `webhook_url` (String, Sensitive) Teams incoming webhook URL.
+- `webhook_url` (String, Sensitive) Teams incoming webhook URL (https).
 
 
 <a id="nestedatt--telegram"></a>
@@ -113,4 +113,4 @@ Required:
 
 Required:
 
-- `webhook_url` (String) URL that receives alert payloads.
+- `webhook_url` (String) https URL that receives alert payloads.

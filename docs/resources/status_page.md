@@ -32,8 +32,8 @@ resource "uptimeeye_status_page" "public" {
 
 ### Required
 
-- `name` (String) Display name of the status page.
-- `slug` (String) URL slug under which the page is served.
+- `name` (String) Display name of the status page, 1 to 80 characters.
+- `slug` (String) URL slug under which the page is served: 3 to 63 lowercase letters, digits and hyphens (e.g. `acme-status`).
 
 ### Optional
 

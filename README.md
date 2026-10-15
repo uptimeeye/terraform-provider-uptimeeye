@@ -35,8 +35,7 @@ resource "uptimeeye_monitor" "api" {
       url = "https://api.example.com/health"
     }
     asserts = [{
-      type     = "body"
-      property = "statusCode"
+      type     = "statusCode"
       operator = "is"
       expected = "200"
     }]
@@ -44,7 +43,7 @@ resource "uptimeeye_monitor" "api" {
 
   options = {
     tick_every = 60
-    timeout    = 5000
+    timeout    = 30 # seconds
   }
 }
 ```

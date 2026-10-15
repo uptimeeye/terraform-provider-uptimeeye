@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"regexp"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -108,12 +109,16 @@ func (r *StatusPageResource) Schema(ctx context.Context, req resource.SchemaRequ
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Display name of the status page.",
+				MarkdownDescription: "Display name of the status page, 1 to 80 characters.",
 				Required:            true,
+				Validators:          nameValidators(),
 			},
 			"slug": schema.StringAttribute{
-				MarkdownDescription: "URL slug under which the page is served.",
+				MarkdownDescription: "URL slug under which the page is served: 3 to 63 lowercase letters, digits and hyphens (e.g. `acme-status`).",
 				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9-]{3,63}$`), "must be 3 to 63 lowercase letters, digits and hyphens, e.g. acme-status"),
+				},
 			},
 			"tags": schema.ListAttribute{
 				MarkdownDescription: "Tags for organizing status pages.",
@@ -264,8 +269,8 @@ func buildStatusPageBody(ctx context.Context, diags *diag.Diagnostics, plan *Sta
 		sections = append(sections, apiclient.StatusPageSection{
 			Name:           s.Name.ValueString(),
 			Description:    s.Description.ValueString(),
-			Monitors:       ptr(monitors),
-			ScheduledTasks: ptr(tasks),
+			Monitors:       monitors,
+			ScheduledTasks: tasks,
 			StatusPageId:   pageId,
 		})
 	}
@@ -282,7 +287,7 @@ func buildStatusPageBody(ctx context.Context, diags *diag.Diagnostics, plan *Sta
 		BrandColor:           ptr(plan.BrandColor.ValueString()),
 		HidePoweredBy:        ptr(plan.HidePoweredBy.ValueBool()),
 		SubscriptionsEnabled: ptr(plan.SubscriptionsEnabled.ValueBool()),
-		Sections:             ptr(sections),
+		Sections:             sections,
 	}
 }
 
@@ -294,40 +299,31 @@ func statusPageToState(ctx context.Context, diags *diag.Diagnostics, page *apicl
 	}
 	state.Name = types.StringValue(page.Name)
 	state.Slug = types.StringValue(page.Slug)
-	state.Tags = stringSliceToList(ctx, diags, page.Tags)
+	state.Tags = stringSliceToList(ctx, diags, deref(page.Tags, nil))
 	state.Theme = types.StringValue(string(deref(page.Theme, apiclient.Dark)))
 	state.LogoUrl = types.StringValue(deref(page.LogoUrl, ""))
 	state.BrandColor = types.StringValue(deref(page.BrandColor, ""))
 	state.HidePoweredBy = types.BoolValue(deref(page.HidePoweredBy, false))
 	state.SubscriptionsEnabled = types.BoolValue(deref(page.SubscriptionsEnabled, true))
 
-	apiSections := []apiclient.StatusPageSection{}
-	if page.Sections != nil {
-		apiSections = *page.Sections
-	}
-
-	sectionModels := make([]statusPageSectionModel, 0, len(apiSections))
-	for _, s := range apiSections {
+	sectionModels := make([]statusPageSectionModel, 0, len(page.Sections))
+	for _, s := range page.Sections {
 		monitorModels := []statusPageSectionMonitorModel{}
-		if s.Monitors != nil {
-			for _, m := range *s.Monitors {
-				monitorModels = append(monitorModels, statusPageSectionMonitorModel{
-					MonitorId:        types.StringValue(m.MonitorId),
-					ShowUptime:       types.BoolValue(m.ShowUptime),
-					ShowResponseTime: types.BoolValue(m.ShowResponseTime),
-				})
-			}
+		for _, m := range s.Monitors {
+			monitorModels = append(monitorModels, statusPageSectionMonitorModel{
+				MonitorId:        types.StringValue(m.MonitorId),
+				ShowUptime:       types.BoolValue(m.ShowUptime),
+				ShowResponseTime: types.BoolValue(m.ShowResponseTime),
+			})
 		}
 		monitorList, d := types.ListValueFrom(ctx, types.ObjectType{AttrTypes: statusPageSectionMonitorAttrTypes()}, monitorModels)
 		diags.Append(d...)
 
 		taskModels := []statusPageSectionScheduledTaskModel{}
-		if s.ScheduledTasks != nil {
-			for _, t := range *s.ScheduledTasks {
-				taskModels = append(taskModels, statusPageSectionScheduledTaskModel{
-					ScheduledTaskId: types.StringValue(t.ScheduledTaskId),
-				})
-			}
+		for _, t := range s.ScheduledTasks {
+			taskModels = append(taskModels, statusPageSectionScheduledTaskModel{
+				ScheduledTaskId: types.StringValue(t.ScheduledTaskId),
+			})
 		}
 		taskList, d := types.ListValueFrom(ctx, types.ObjectType{AttrTypes: statusPageSectionScheduledTaskAttrTypes()}, taskModels)
 		diags.Append(d...)

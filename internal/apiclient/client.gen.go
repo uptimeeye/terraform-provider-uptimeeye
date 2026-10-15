@@ -93,6 +93,14 @@ const (
 	Dns  MonitorTestStepType = "dns"
 	Http MonitorTestStepType = "http"
 	Icmp MonitorTestStepType = "icmp"
+	Tcp  MonitorTestStepType = "tcp"
+)
+
+// Defines values for NotificationType.
+const (
+	NotificationTypeMonitor       NotificationType = "monitor"
+	NotificationTypeScheduledTask NotificationType = "scheduled_task"
+	NotificationTypeTest          NotificationType = "test"
 )
 
 // Defines values for NotificationIntegrationType.
@@ -104,6 +112,12 @@ const (
 	Teams     NotificationIntegrationType = "teams"
 	Telegram  NotificationIntegrationType = "telegram"
 	Webhook   NotificationIntegrationType = "webhook"
+)
+
+// Defines values for ResolveHostResponseBodyLanguage.
+const (
+	ResolveHostResponseBodyLanguageDe ResolveHostResponseBodyLanguage = "de"
+	ResolveHostResponseBodyLanguageEn ResolveHostResponseBodyLanguage = "en"
 )
 
 // Defines values for ScheduledTaskStatus.
@@ -144,11 +158,29 @@ const (
 	Minute SimpleTaskIntervalType = "minute"
 )
 
+// Defines values for StatusPageLanguage.
+const (
+	StatusPageLanguageDe StatusPageLanguage = "de"
+	StatusPageLanguageEn StatusPageLanguage = "en"
+)
+
 // Defines values for StatusPageTheme.
 const (
 	Auto  StatusPageTheme = "auto"
 	Dark  StatusPageTheme = "dark"
 	Light StatusPageTheme = "light"
+)
+
+// Defines values for StatusPageDataLanguage.
+const (
+	StatusPageDataLanguageDe StatusPageDataLanguage = "de"
+	StatusPageDataLanguageEn StatusPageDataLanguage = "en"
+)
+
+// Defines values for StatusPageRouteCheckResponseBodyLanguage.
+const (
+	StatusPageRouteCheckResponseBodyLanguageDe StatusPageRouteCheckResponseBodyLanguage = "de"
+	StatusPageRouteCheckResponseBodyLanguageEn StatusPageRouteCheckResponseBodyLanguage = "en"
 )
 
 // AddStatusPageDomainRequestBody defines model for AddStatusPageDomainRequestBody.
@@ -209,12 +241,12 @@ type CronTask struct {
 
 // DNSInfo defines model for DNSInfo.
 type DNSInfo struct {
-	A     *[]string `json:"a"`
-	Aaaa  *[]string `json:"aaaa"`
-	Cname *[]string `json:"cname"`
-	Mx    *[]string `json:"mx"`
-	Ns    *[]string `json:"ns"`
-	Txt   *[]string `json:"txt"`
+	A     *[]string `json:"a,omitempty"`
+	Aaaa  *[]string `json:"aaaa,omitempty"`
+	Cname *[]string `json:"cname,omitempty"`
+	Mx    *[]string `json:"mx,omitempty"`
+	Ns    *[]string `json:"ns,omitempty"`
+	Txt   *[]string `json:"txt,omitempty"`
 }
 
 // DeleteVariableResponseBody defines model for DeleteVariableResponseBody.
@@ -226,12 +258,13 @@ type DeleteVariableResponseBody struct {
 
 // DiscordConfiguration defines model for DiscordConfiguration.
 type DiscordConfiguration struct {
+	// WebhookUrl An https URL with a hostname
 	WebhookUrl string `json:"webhookUrl"`
 }
 
 // EmailConfiguration defines model for EmailConfiguration.
 type EmailConfiguration struct {
-	To *[]string `json:"to"`
+	To []string `json:"to"`
 }
 
 // ErrorDetail defines model for ErrorDetail.
@@ -255,7 +288,7 @@ type ErrorModel struct {
 	Detail *string `json:"detail,omitempty"`
 
 	// Errors Optional list of individual error details
-	Errors *[]ErrorDetail `json:"errors"`
+	Errors *[]ErrorDetail `json:"errors,omitempty"`
 
 	// Instance A URI reference that identifies the specific occurrence of the problem.
 	Instance *string `json:"instance,omitempty"`
@@ -272,16 +305,16 @@ type ErrorModel struct {
 
 // ExecutionByLocation defines model for ExecutionByLocation.
 type ExecutionByLocation struct {
-	Location string        `json:"location"`
-	Steps    *[]StepResult `json:"steps"`
+	Location string       `json:"location"`
+	Steps    []StepResult `json:"steps"`
 }
 
 // ExecutionResponse defines model for ExecutionResponse.
 type ExecutionResponse struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema               *string                `json:"$schema,omitempty"`
-	ExecutionId          string                 `json:"executionId"`
-	ExecutionsByLocation *[]ExecutionByLocation `json:"executionsByLocation"`
+	Schema               *string               `json:"$schema,omitempty"`
+	ExecutionId          string                `json:"executionId"`
+	ExecutionsByLocation []ExecutionByLocation `json:"executionsByLocation"`
 }
 
 // ExecutionResultSeries defines model for ExecutionResultSeries.
@@ -306,10 +339,10 @@ type ExecutionStepSeries struct {
 
 // ExecutionSummary defines model for ExecutionSummary.
 type ExecutionSummary struct {
-	Executions *[]LocationExecution `json:"executions"`
-	Id         string               `json:"id"`
-	Success    bool                 `json:"success"`
-	Timestamp  int64                `json:"timestamp"`
+	Executions []LocationExecution `json:"executions"`
+	Id         string              `json:"id"`
+	Success    bool                `json:"success"`
+	Timestamp  int64               `json:"timestamp"`
 }
 
 // ExtractedValues defines model for ExtractedValues.
@@ -326,29 +359,29 @@ type ExtractedValuesType string
 // GetAvailableNotificationIntegrationsResponseBody defines model for GetAvailableNotificationIntegrationsResponseBody.
 type GetAvailableNotificationIntegrationsResponseBody struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema                   *string                    `json:"$schema,omitempty"`
-	NotificationIntegrations *[]NotificationIntegration `json:"notificationIntegrations"`
+	Schema                   *string                   `json:"$schema,omitempty"`
+	NotificationIntegrations []NotificationIntegration `json:"notificationIntegrations"`
 }
 
 // GetMonitorExecutionsOutputBody defines model for GetMonitorExecutionsOutputBody.
 type GetMonitorExecutionsOutputBody struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema     *string             `json:"$schema,omitempty"`
-	Executions *[]ExecutionSummary `json:"executions"`
+	Schema     *string            `json:"$schema,omitempty"`
+	Executions []ExecutionSummary `json:"executions"`
 }
 
 // GetNotificationChannelsResponseBody defines model for GetNotificationChannelsResponseBody.
 type GetNotificationChannelsResponseBody struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema               *string                `json:"$schema,omitempty"`
-	NotificationChannels *[]NotificationChannel `json:"notificationChannels"`
+	Schema               *string               `json:"$schema,omitempty"`
+	NotificationChannels []NotificationChannel `json:"notificationChannels"`
 }
 
 // GetNotificationIntegrationsResponseBody defines model for GetNotificationIntegrationsResponseBody.
 type GetNotificationIntegrationsResponseBody struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema                   *string                    `json:"$schema,omitempty"`
-	NotificationIntegrations *[]NotificationIntegration `json:"notificationIntegrations"`
+	Schema                   *string                   `json:"$schema,omitempty"`
+	NotificationIntegrations []NotificationIntegration `json:"notificationIntegrations"`
 }
 
 // GetReportScheduleResponseBody defines model for GetReportScheduleResponseBody.
@@ -362,29 +395,29 @@ type GetReportScheduleResponseBody struct {
 // GetScheduledTaskEventsResponse defines model for GetScheduledTaskEventsResponse.
 type GetScheduledTaskEventsResponse struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema *string               `json:"$schema,omitempty"`
-	Events *[]ScheduledTaskEvent `json:"events"`
+	Schema *string              `json:"$schema,omitempty"`
+	Events []ScheduledTaskEvent `json:"events"`
 }
 
 // GetScheduledTasksWithHealthDetailsOutputResponse defines model for GetScheduledTasksWithHealthDetailsOutputResponse.
 type GetScheduledTasksWithHealthDetailsOutputResponse struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema         *string                       `json:"$schema,omitempty"`
-	ScheduledTasks *[]ScheduledTaskHealthDetails `json:"scheduledTasks"`
+	Schema         *string                      `json:"$schema,omitempty"`
+	ScheduledTasks []ScheduledTaskHealthDetails `json:"scheduledTasks"`
 }
 
 // GetStatusPagesResponseBody defines model for GetStatusPagesResponseBody.
 type GetStatusPagesResponseBody struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema      *string       `json:"$schema,omitempty"`
-	StatusPages *[]StatusPage `json:"statusPages"`
+	Schema      *string      `json:"$schema,omitempty"`
+	StatusPages []StatusPage `json:"statusPages"`
 }
 
 // GetVariablesResponseBody defines model for GetVariablesResponseBody.
 type GetVariablesResponseBody struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema    *string     `json:"$schema,omitempty"`
-	Variables *[]Variable `json:"variables"`
+	Schema    *string    `json:"$schema,omitempty"`
+	Variables []Variable `json:"variables"`
 }
 
 // Header defines model for Header.
@@ -428,9 +461,17 @@ type HttpTimings struct {
 // ListStatusPageDomainsResponseBody defines model for ListStatusPageDomainsResponseBody.
 type ListStatusPageDomainsResponseBody struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema      *string             `json:"$schema,omitempty"`
-	CnameTarget string              `json:"cnameTarget"`
-	Domains     *[]StatusPageDomain `json:"domains"`
+	Schema      *string            `json:"$schema,omitempty"`
+	CnameTarget string             `json:"cnameTarget"`
+	Domains     []StatusPageDomain `json:"domains"`
+}
+
+// Location defines model for Location.
+type Location struct {
+	Name string `json:"name"`
+
+	// Served Whether a pinger at the location is taking work right now. An unserved location is temporarily unavailable: monitors may still select it, and their executions leave it out until it is served again.
+	Served bool `json:"served"`
 }
 
 // LocationExecution defines model for LocationExecution.
@@ -443,8 +484,13 @@ type LocationExecution struct {
 // LocationsResponseBody defines model for LocationsResponseBody.
 type LocationsResponseBody struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema    *string   `json:"$schema,omitempty"`
-	Locations *[]string `json:"locations"`
+	Schema *string `json:"$schema,omitempty"`
+
+	// Details The same locations with whether each is currently served
+	Details []Location `json:"details"`
+
+	// Locations Names of the locations monitors can select
+	Locations []string `json:"locations"`
 }
 
 // Monitor defines model for Monitor.
@@ -453,20 +499,20 @@ type Monitor struct {
 	Schema *string `json:"$schema,omitempty"`
 
 	// Favicon Favicon of the monitored site as a base64 data URI. Server-managed; fetched automatically for HTTP monitors.
-	Favicon   *string   `json:"favicon,omitempty"`
-	Id        *string   `json:"id,omitempty"`
-	Locations *[]string `json:"locations"`
-
-	// Message Notification message associated with the monitor.
-	Message *string `json:"message,omitempty"`
-	Name    string  `json:"name"`
+	Favicon   *string  `json:"favicon,omitempty"`
+	Id        *string  `json:"id,omitempty"`
+	Locations []string `json:"locations"`
+	Name      string   `json:"name"`
 
 	// NotificationChannelId The ID of the Notification channel associated with the monitor.
-	NotificationChannelId string             `json:"notificationChannelId"`
-	Options               MonitorOptions     `json:"options"`
-	Status                MonitorStatus      `json:"status"`
-	Steps                 *[]MonitorTestStep `json:"steps"`
-	Tags                  *[]string          `json:"tags"`
+	NotificationChannelId string         `json:"notificationChannelId"`
+	Options               MonitorOptions `json:"options"`
+
+	// RegionsUnavailable Configured locations that are temporarily unavailable: not served right now, so left out of executions. Set when reading a single monitor. A monitor with every location unavailable is not being checked.
+	RegionsUnavailable *[]string         `json:"regionsUnavailable,omitempty"`
+	Status             MonitorStatus     `json:"status"`
+	Steps              []MonitorTestStep `json:"steps"`
+	Tags               *[]string         `json:"tags,omitempty"`
 }
 
 // MonitorStatus defines model for Monitor.Status.
@@ -479,22 +525,27 @@ type MonitorHealth struct {
 	DownSince     *int64   `json:"downSince,omitempty"`
 
 	// Favicon favicon of the monitored site as a base64 data URI
-	Favicon   *string           `json:"favicon,omitempty"`
-	Heartbeat *[]HeartbeatPoint `json:"heartbeat"`
+	Favicon   *string          `json:"favicon,omitempty"`
+	Heartbeat []HeartbeatPoint `json:"heartbeat"`
 
 	// Interval check interval in seconds
 	Interval *int64 `json:"interval,omitempty"`
 
 	// LastCheck unix timestamp of the most recent check
-	LastCheck   *int64              `json:"lastCheck,omitempty"`
-	MonitorId   string              `json:"monitorId"`
-	Name        string              `json:"name"`
-	Regions     *[]string           `json:"regions"`
-	RegionsDown *[]string           `json:"regionsDown"`
-	Status      MonitorHealthStatus `json:"status"`
-	StepsCount  int64               `json:"stepsCount"`
-	Tags        *[]string           `json:"tags"`
-	UpSince     *int64              `json:"upSince,omitempty"`
+	LastCheck *int64   `json:"lastCheck,omitempty"`
+	MonitorId string   `json:"monitorId"`
+	Name      string   `json:"name"`
+	Regions   []string `json:"regions"`
+
+	// RegionsDown configured locations whose latest result failed; never an unavailable one
+	RegionsDown []string `json:"regionsDown"`
+
+	// RegionsUnavailable configured locations that are temporarily unavailable: not served right now, so left out of executions. A monitor with every location unavailable is not being checked.
+	RegionsUnavailable []string            `json:"regionsUnavailable"`
+	Status             MonitorHealthStatus `json:"status"`
+	StepsCount         int64               `json:"stepsCount"`
+	Tags               []string            `json:"tags"`
+	UpSince            *int64              `json:"upSince,omitempty"`
 
 	// Uptime uptime percentage over the last 24h, null when no checks ran
 	Uptime *float64 `json:"uptime,omitempty"`
@@ -511,6 +562,7 @@ type MonitorLimits struct {
 	// Schema A URL to the JSON Schema for this object.
 	Schema           *string `json:"$schema,omitempty"`
 	MaxMonitorSteps  int64   `json:"maxMonitorSteps"`
+	MaxRegions       int64   `json:"maxRegions"`
 	MinCheckInterval int64   `json:"minCheckInterval"`
 }
 
@@ -538,7 +590,15 @@ type MonitorStatistics struct {
 	Schema *string `json:"$schema,omitempty"`
 
 	// DownSince unix timestamp
-	DownSince *int64                  `json:"downSince,omitempty"`
+	DownSince *int64 `json:"downSince,omitempty"`
+
+	// Executions Executions of the monitor in the range, each counted once whatever its number of locations; over the last executionsDays days only when that is set. Not counted in the status page data (0)
+	Executions int64 `json:"executions"`
+
+	// ExecutionsDays Set when the range starts before the retention of location results (7 days): executions are then counted over the last executionsDays days only, not over the whole range
+	ExecutionsDays *int64 `json:"executionsDays,omitempty"`
+
+	// Incidents Incidents affecting the monitor that overlap the range: created before it ends and not resolved before it starts
 	Incidents int64                   `json:"incidents"`
 	MonitorId *string                 `json:"monitorId,omitempty"`
 	Name      string                  `json:"name"`
@@ -553,9 +613,9 @@ type MonitorStatisticsStatus string
 
 // MonitorTestStep defines model for MonitorTestStep.
 type MonitorTestStep struct {
-	Asserts         *[]Assert           `json:"asserts"`
+	Asserts         []Assert            `json:"asserts"`
 	ExecNumber      int64               `json:"execNumber"`
-	ExtractedValues *[]ExtractedValues  `json:"extractedValues"`
+	ExtractedValues *[]ExtractedValues  `json:"extractedValues,omitempty"`
 	Id              *string             `json:"id,omitempty"`
 	Name            *string             `json:"name,omitempty"`
 	Request         RequestTemplate     `json:"request"`
@@ -568,13 +628,17 @@ type MonitorTestStepType string
 // MonitorTimeSeriesResponse defines model for MonitorTimeSeriesResponse.
 type MonitorTimeSeriesResponse struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema              *string                  `json:"$schema,omitempty"`
-	ExecutionAvgTime    float64                  `json:"executionAvgTime"`
-	ExecutionSeries     *[]ExecutionResultSeries `json:"executionSeries"`
-	ExecutionStepSeries *[]ExecutionStepSeries   `json:"executionStepSeries"`
-	MonitorId           *string                  `json:"monitorId,omitempty"`
-	UptimePercentage    float64                  `json:"uptimePercentage"`
-	UptimeSeries        *[]UptimeSeries          `json:"uptimeSeries"`
+	Schema *string `json:"$schema,omitempty"`
+
+	// ExecutionAvgTime Absent when the range has no data
+	ExecutionAvgTime    *float64                `json:"executionAvgTime,omitempty"`
+	ExecutionSeries     []ExecutionResultSeries `json:"executionSeries"`
+	ExecutionStepSeries []ExecutionStepSeries   `json:"executionStepSeries"`
+	MonitorId           *string                 `json:"monitorId,omitempty"`
+
+	// UptimePercentage Absent when the range has no data
+	UptimePercentage *float64       `json:"uptimePercentage,omitempty"`
+	UptimeSeries     []UptimeSeries `json:"uptimeSeries"`
 }
 
 // Notification defines model for Notification.
@@ -582,32 +646,56 @@ type Notification struct {
 	CreatedAt       string `json:"created_at"`
 	ExecutionId     string `json:"execution_id"`
 	ExecutionStatus string `json:"execution_status"`
-	ReferenceId     string `json:"reference_id"`
-	ReferenceName   string `json:"reference_name"`
-	Status          string `json:"status"`
-	Type            string `json:"type"`
+
+	// Failures The targets a failed test send could not reach, with the error of each. Only on type test.
+	Failures      *[]NotificationFailure `json:"failures,omitempty"`
+	ReferenceId   string                 `json:"reference_id"`
+	ReferenceName string                 `json:"reference_name"`
+	Status        string                 `json:"status"`
+
+	// Type What the notification is about: a monitor, a scheduled task, or a test send of the notification channel (reference_id and reference_name are then the channel's, execution_id and execution_status empty).
+	Type NotificationType `json:"type"`
 }
+
+// NotificationType What the notification is about: a monitor, a scheduled task, or a test send of the notification channel (reference_id and reference_name are then the channel's, execution_id and execution_status empty).
+type NotificationType string
 
 // NotificationChannel defines model for NotificationChannel.
 type NotificationChannel struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema              *string   `json:"$schema,omitempty"`
-	EnabledIntegrations *[]string `json:"enabledIntegrations"`
-	Id                  *string   `json:"id,omitempty"`
-	Name                string    `json:"name"`
-	Tags                *[]string `json:"tags"`
+	Schema              *string                      `json:"$schema,omitempty"`
+	EnabledIntegrations *[]string                    `json:"enabledIntegrations,omitempty"`
+	Id                  *string                      `json:"id,omitempty"`
+	Name                string                       `json:"name"`
+	Tags                []string                     `json:"tags"`
+	Targets             *[]NotificationChannelTarget `json:"targets,omitempty"`
 }
 
 // NotificationChannelDetails defines model for NotificationChannelDetails.
 type NotificationChannelDetails struct {
 	// Schema A URL to the JSON Schema for this object.
 	Schema                   *string          `json:"$schema,omitempty"`
-	AssociatedMonitors       *[]Monitor       `json:"associatedMonitors"`
-	AssociatedScheduledTasks *[]ScheduledTask `json:"associatedScheduledTasks"`
+	AssociatedMonitors       *[]Monitor       `json:"associatedMonitors,omitempty"`
+	AssociatedScheduledTasks *[]ScheduledTask `json:"associatedScheduledTasks,omitempty"`
 	CreatedAt                time.Time        `json:"created_at"`
 	Id                       *string          `json:"id,omitempty"`
-	RecentNotifications      *[]Notification  `json:"recentNotifications"`
+	RecentNotifications      *[]Notification  `json:"recentNotifications,omitempty"`
 	UpdatedAt                time.Time        `json:"updated_at"`
+}
+
+// NotificationChannelTarget defines model for NotificationChannelTarget.
+type NotificationChannelTarget struct {
+	More   *int64  `json:"more,omitempty"`
+	Target *string `json:"target,omitempty"`
+	Type   string  `json:"type"`
+}
+
+// NotificationFailure defines model for NotificationFailure.
+type NotificationFailure struct {
+	Message string `json:"message"`
+
+	// Target The integration, as the 422 of the test send names it in errors[].location.
+	Target string `json:"target"`
 }
 
 // NotificationIntegration defines model for NotificationIntegration.
@@ -644,9 +732,11 @@ type PagerDutyConfiguration struct {
 type PostVariableRequestBody struct {
 	// Schema A URL to the JSON Schema for this object.
 	Schema *string `json:"$schema,omitempty"`
-	Key    string  `json:"key"`
-	Secure bool    `json:"secure"`
-	Value  string  `json:"value"`
+
+	// Key Name of the {{KEY}} token, case-sensitive
+	Key    string `json:"key"`
+	Secure bool   `json:"secure"`
+	Value  string `json:"value"`
 }
 
 // PutReportScheduleResponseBody defines model for PutReportScheduleResponseBody.
@@ -660,6 +750,8 @@ type PutReportScheduleResponseBody struct {
 type PutVariableRequestBody struct {
 	// Schema A URL to the JSON Schema for this object.
 	Schema *string `json:"$schema,omitempty"`
+
+	// Key Name of the {{KEY}} token, case-sensitive; omitted keeps the key
 	Key    *string `json:"key,omitempty"`
 	Secure *bool   `json:"secure,omitempty"`
 	Value  *string `json:"value,omitempty"`
@@ -668,10 +760,10 @@ type PutVariableRequestBody struct {
 // ReportSchedule defines model for ReportSchedule.
 type ReportSchedule struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema     *string   `json:"$schema,omitempty"`
-	Cadence    string    `json:"cadence"`
-	Enabled    bool      `json:"enabled"`
-	Recipients *[]string `json:"recipients"`
+	Schema     *string  `json:"$schema,omitempty"`
+	Cadence    string   `json:"cadence"`
+	Enabled    bool     `json:"enabled"`
+	Recipients []string `json:"recipients"`
 }
 
 // RequestTemplate defines model for RequestTemplate.
@@ -680,20 +772,26 @@ type RequestTemplate struct {
 	Body *string `json:"body,omitempty"`
 
 	// Header depends on request method
-	Header *[]Header `json:"header"`
+	Header *[]Header `json:"header,omitempty"`
 
 	// Method HEAD,GET,POST,PUT,DELETE
 	Method *string `json:"method,omitempty"`
-	Url    string  `json:"url"`
+
+	// Url http: an http(s) URL with a hostname; dns, icmp: a hostname or IP address; tcp: host:port. May contain {{variable}} tokens.
+	Url string `json:"url"`
 }
 
 // ResolveHostResponseBody defines model for ResolveHostResponseBody.
 type ResolveHostResponseBody struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema   *string `json:"$schema,omitempty"`
-	IsPublic bool    `json:"isPublic"`
-	Slug     string  `json:"slug"`
+	Schema   *string                         `json:"$schema,omitempty"`
+	IsPublic bool                            `json:"isPublic"`
+	Language ResolveHostResponseBodyLanguage `json:"language"`
+	Slug     string                          `json:"slug"`
 }
+
+// ResolveHostResponseBodyLanguage defines model for ResolveHostResponseBody.Language.
+type ResolveHostResponseBodyLanguage string
 
 // Response defines model for Response.
 type Response struct {
@@ -701,13 +799,13 @@ type Response struct {
 	Body *string `json:"body,omitempty"`
 
 	// Headers will be truncated, when successful
-	Headers    *[]Header `json:"headers"`
+	Headers    *[]Header `json:"headers,omitempty"`
 	StatusCode *int64    `json:"statusCode,omitempty"`
 }
 
 // SSLInfo defines model for SSLInfo.
 type SSLInfo struct {
-	DnsNames *[]string `json:"dnsNames"`
+	DnsNames []string `json:"dnsNames"`
 
 	// ExpireIn in nanoseconds
 	ExpireIn     int64     `json:"expireIn"`
@@ -734,7 +832,7 @@ type ScheduledTask struct {
 	NotificationChannelId string               `json:"notificationChannelId"`
 	SimpleTask            *SimpleTask          `json:"simpleTask,omitempty"`
 	Status                *ScheduledTaskStatus `json:"status,omitempty"`
-	Tags                  *[]string            `json:"tags"`
+	Tags                  []string             `json:"tags"`
 	Type                  ScheduledTaskType    `json:"type"`
 	UpdatedAt             *time.Time           `json:"updatedAt,omitempty"`
 }
@@ -772,7 +870,7 @@ type ScheduledTaskHealthDetails struct {
 	NextBeat   int64                            `json:"nextBeat"`
 	SimpleTask *SimpleTask                      `json:"simpleTask,omitempty"`
 	Status     ScheduledTaskHealthDetailsStatus `json:"status"`
-	Tags       *[]string                        `json:"tags"`
+	Tags       []string                         `json:"tags"`
 	Type       string                           `json:"type"`
 
 	// UpSince unix timestamp
@@ -835,23 +933,29 @@ type SlackConfiguration struct {
 // StatusPage defines model for StatusPage.
 type StatusPage struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema               *string              `json:"$schema,omitempty"`
-	ActiveCustomDomain   *string              `json:"activeCustomDomain,omitempty"`
-	BrandColor           *string              `json:"brandColor,omitempty"`
-	CustomDomainEnabled  *bool                `json:"customDomainEnabled,omitempty"`
-	HidePoweredBy        *bool                `json:"hidePoweredBy,omitempty"`
-	Id                   *string              `json:"id,omitempty"`
-	IsPublic             bool                 `json:"isPublic"`
-	LogoUrl              *string              `json:"logoUrl,omitempty"`
-	Name                 string               `json:"name"`
-	Sections             *[]StatusPageSection `json:"sections"`
-	Slug                 string               `json:"slug"`
-	SubscribersEnabled   *bool                `json:"subscribersEnabled,omitempty"`
-	SubscriptionsEnabled *bool                `json:"subscriptionsEnabled,omitempty"`
-	Tags                 *[]string            `json:"tags"`
-	Theme                *StatusPageTheme     `json:"theme,omitempty"`
-	WhiteLabelEnabled    *bool                `json:"whiteLabelEnabled,omitempty"`
+	Schema              *string `json:"$schema,omitempty"`
+	ActiveCustomDomain  *string `json:"activeCustomDomain,omitempty"`
+	BrandColor          *string `json:"brandColor,omitempty"`
+	CustomDomainEnabled *bool   `json:"customDomainEnabled,omitempty"`
+	HidePoweredBy       *bool   `json:"hidePoweredBy,omitempty"`
+	Id                  *string `json:"id,omitempty"`
+	IsPublic            bool    `json:"isPublic"`
+
+	// Language Language of the public status page, its badge, OG image and RSS feed. A create without it gets en; an update without it keeps the stored language.
+	Language             *StatusPageLanguage `json:"language,omitempty"`
+	LogoUrl              *string             `json:"logoUrl,omitempty"`
+	Name                 string              `json:"name"`
+	Sections             []StatusPageSection `json:"sections"`
+	Slug                 string              `json:"slug"`
+	SubscribersEnabled   *bool               `json:"subscribersEnabled,omitempty"`
+	SubscriptionsEnabled *bool               `json:"subscriptionsEnabled,omitempty"`
+	Tags                 *[]string           `json:"tags,omitempty"`
+	Theme                *StatusPageTheme    `json:"theme,omitempty"`
+	WhiteLabelEnabled    *bool               `json:"whiteLabelEnabled,omitempty"`
 }
+
+// StatusPageLanguage Language of the public status page, its badge, OG image and RSS feed. A create without it gets en; an update without it keeps the stored language.
+type StatusPageLanguage string
 
 // StatusPageTheme defines model for StatusPage.Theme.
 type StatusPageTheme string
@@ -862,11 +966,14 @@ type StatusPageData struct {
 	Schema                  *string                      `json:"$schema,omitempty"`
 	Id                      string                       `json:"id"`
 	IsPublic                bool                         `json:"is_public"`
-	MonitorStatistics       *[]MonitorStatistics         `json:"monitor_statistics"`
-	MonitorTimeSeries       *[]MonitorTimeSeriesResponse `json:"monitor_time_series"`
-	ScheduledTaskEvents     *[]ScheduledTaskEvent        `json:"scheduled_task_events"`
-	ScheduledTaskStatistics *[]ScheduledTaskStatistics   `json:"scheduled_task_statistics"`
+	Language                StatusPageDataLanguage       `json:"language"`
+	MonitorStatistics       []MonitorStatistics          `json:"monitor_statistics"`
+	MonitorTimeSeries       *[]MonitorTimeSeriesResponse `json:"monitor_time_series,omitempty"`
+	ScheduledTaskStatistics *[]ScheduledTaskStatistics   `json:"scheduled_task_statistics,omitempty"`
 }
+
+// StatusPageDataLanguage defines model for StatusPageData.Language.
+type StatusPageDataLanguage string
 
 // StatusPageDomain defines model for StatusPageDomain.
 type StatusPageDomain struct {
@@ -880,19 +987,23 @@ type StatusPageDomain struct {
 // StatusPageRouteCheckResponseBody defines model for StatusPageRouteCheckResponseBody.
 type StatusPageRouteCheckResponseBody struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema   *string `json:"$schema,omitempty"`
-	Id       *string `json:"id,omitempty"`
-	IsPublic bool    `json:"is_public"`
+	Schema   *string                                  `json:"$schema,omitempty"`
+	Id       *string                                  `json:"id,omitempty"`
+	IsPublic bool                                     `json:"is_public"`
+	Language StatusPageRouteCheckResponseBodyLanguage `json:"language"`
 }
+
+// StatusPageRouteCheckResponseBodyLanguage defines model for StatusPageRouteCheckResponseBody.Language.
+type StatusPageRouteCheckResponseBodyLanguage string
 
 // StatusPageSection defines model for StatusPageSection.
 type StatusPageSection struct {
-	Description    string                            `json:"description"`
-	Id             *string                           `json:"id,omitempty"`
-	Monitors       *[]StatusPageSectionMonitor       `json:"monitors"`
-	Name           string                            `json:"name"`
-	ScheduledTasks *[]StatusPageSectionScheduledTask `json:"scheduledTasks"`
-	StatusPageId   string                            `json:"statusPageId"`
+	Description    string                           `json:"description"`
+	Id             *string                          `json:"id,omitempty"`
+	Monitors       []StatusPageSectionMonitor       `json:"monitors"`
+	Name           string                           `json:"name"`
+	ScheduledTasks []StatusPageSectionScheduledTask `json:"scheduledTasks"`
+	StatusPageId   string                           `json:"statusPageId"`
 }
 
 // StatusPageSectionMonitor defines model for StatusPageSectionMonitor.
@@ -911,7 +1022,7 @@ type StatusPageSectionScheduledTask struct {
 
 // StepResult defines model for StepResult.
 type StepResult struct {
-	Asserts  *[]AssertResult `json:"asserts"`
+	Asserts  *[]AssertResult `json:"asserts,omitempty"`
 	DnsInfo  *DNSInfo        `json:"dnsInfo,omitempty"`
 	EndAt    time.Time       `json:"endAt"`
 	Error    *string         `json:"error,omitempty"`
@@ -925,6 +1036,7 @@ type StepResult struct {
 
 // TeamsConfiguration defines model for TeamsConfiguration.
 type TeamsConfiguration struct {
+	// WebhookUrl An https URL with a hostname
 	WebhookUrl string `json:"webhookUrl"`
 }
 
@@ -959,6 +1071,7 @@ type Variable struct {
 
 // WebhookConfiguration defines model for WebhookConfiguration.
 type WebhookConfiguration struct {
+	// WebhookUrl An https URL with a hostname
 	WebhookUrl string `json:"webhookUrl"`
 }
 

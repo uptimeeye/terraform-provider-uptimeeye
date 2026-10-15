@@ -24,7 +24,7 @@ resource "uptimeeye_notification_channel" "oncall" {
 
 ### Required
 
-- `name` (String) Display name of the channel.
+- `name` (String) Display name of the channel, 1 to 80 characters.
 
 ### Optional
 

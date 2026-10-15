@@ -25,8 +25,8 @@ resource "uptimeeye_variable" "api_token" {
 
 ### Required
 
-- `key` (String) Variable name as referenced in monitor steps.
-- `value` (String, Sensitive) Variable value. Always stored encrypted at rest by UptimeEye; additionally marked sensitive in Terraform output.
+- `key` (String) Variable name as referenced in monitor steps (`{{KEY}}`, case-sensitive): letters, digits and underscores, not starting with a digit, at most 64 characters.
+- `value` (String, Sensitive) Variable value, at most 255 characters. Always stored encrypted at rest by UptimeEye; additionally marked sensitive in Terraform output.
 
 ### Optional
 

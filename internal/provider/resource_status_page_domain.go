@@ -134,12 +134,10 @@ func (r *StatusPageDomainResource) Read(ctx context.Context, req resource.ReadRe
 	}
 
 	var domain *apiclient.StatusPageDomain
-	if res.JSON200.Domains != nil {
-		for i := range *res.JSON200.Domains {
-			if (*res.JSON200.Domains)[i].Id == state.Id.ValueString() {
-				domain = &(*res.JSON200.Domains)[i]
-				break
-			}
+	for i := range res.JSON200.Domains {
+		if res.JSON200.Domains[i].Id == state.Id.ValueString() {
+			domain = &res.JSON200.Domains[i]
+			break
 		}
 	}
 	if domain == nil {

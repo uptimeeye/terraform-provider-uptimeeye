@@ -95,7 +95,7 @@ func (r *ReportScheduleResource) upsertReportSchedule(ctx context.Context, diags
 	body := apiclient.PutV1StatusPagesStatusPageIdReportScheduleJSONRequestBody{
 		Cadence:    plan.Cadence.ValueString(),
 		Enabled:    plan.Enabled.ValueBool(),
-		Recipients: ptr(listToStringSlice(ctx, diags, plan.Recipients)),
+		Recipients: listToStringSlice(ctx, diags, plan.Recipients),
 	}
 	if diags.HasError() {
 		return false
@@ -180,7 +180,7 @@ func (r *ReportScheduleResource) Delete(ctx context.Context, req resource.Delete
 	body := apiclient.PutV1StatusPagesStatusPageIdReportScheduleJSONRequestBody{
 		Cadence:    state.Cadence.ValueString(),
 		Enabled:    false,
-		Recipients: ptr(listToStringSlice(ctx, &resp.Diagnostics, state.Recipients)),
+		Recipients: listToStringSlice(ctx, &resp.Diagnostics, state.Recipients),
 	}
 	if resp.Diagnostics.HasError() {
 		return

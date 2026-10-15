@@ -79,11 +79,9 @@ func (d *NotificationChannelDataSource) Read(ctx context.Context, req datasource
 
 	name := state.Name.ValueString()
 	var matches []apiclient.NotificationChannel
-	if res.JSON200.NotificationChannels != nil {
-		for _, channel := range *res.JSON200.NotificationChannels {
-			if channel.Name == name {
-				matches = append(matches, channel)
-			}
+	for _, channel := range res.JSON200.NotificationChannels {
+		if channel.Name == name {
+			matches = append(matches, channel)
 		}
 	}
 

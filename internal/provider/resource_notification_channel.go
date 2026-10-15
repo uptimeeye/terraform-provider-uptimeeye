@@ -47,8 +47,9 @@ func (r *NotificationChannelResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Display name of the channel.",
+				MarkdownDescription: "Display name of the channel, 1 to 80 characters.",
 				Required:            true,
+				Validators:          nameValidators(),
 			},
 			"tags": schema.ListAttribute{
 				MarkdownDescription: "Tags for organizing channels.",
@@ -74,7 +75,7 @@ func (r *NotificationChannelResource) Create(ctx context.Context, req resource.C
 
 	body := apiclient.PostV1NotificationChannelsJSONRequestBody{
 		Name: plan.Name.ValueString(),
-		Tags: ptr(listToStringSlice(ctx, &resp.Diagnostics, plan.Tags)),
+		Tags: listToStringSlice(ctx, &resp.Diagnostics, plan.Tags),
 	}
 	if resp.Diagnostics.HasError() {
 		return
@@ -134,7 +135,7 @@ func (r *NotificationChannelResource) Update(ctx context.Context, req resource.U
 
 	body := apiclient.PutV1NotificationChannelsNotificationChannelIdJSONRequestBody{
 		Name: plan.Name.ValueString(),
-		Tags: ptr(listToStringSlice(ctx, &resp.Diagnostics, plan.Tags)),
+		Tags: listToStringSlice(ctx, &resp.Diagnostics, plan.Tags),
 	}
 	if resp.Diagnostics.HasError() {
 		return

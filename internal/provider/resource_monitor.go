@@ -4,6 +4,7 @@ import (
 	"context"
 	"sort"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -165,8 +166,9 @@ func (r *MonitorResource) Schema(ctx context.Context, req resource.SchemaRequest
 				PlanModifiers:       []planmodifier.String{stringplanmodifier.UseStateForUnknown()},
 			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "Display name of the monitor.",
+				MarkdownDescription: "Display name of the monitor, 1 to 80 characters.",
 				Required:            true,
+				Validators:          nameValidators(),
 			},
 			"notification_channel_id": schema.StringAttribute{
 				MarkdownDescription: "ID of the notification channel that receives alerts for this monitor.",
@@ -204,17 +206,20 @@ func (r *MonitorResource) Schema(ctx context.Context, req resource.SchemaRequest
 							Default:             stringdefault.StaticString(""),
 						},
 						"type": schema.StringAttribute{
-							MarkdownDescription: "Step type.",
+							MarkdownDescription: "Step type. One of `http`, `dns`, `icmp`, `tcp`.",
 							Required:            true,
-							Validators:          []validator.String{stringvalidator.OneOf("http", "dns", "icmp")},
+							Validators:          []validator.String{stringvalidator.OneOf("http", "dns", "icmp", "tcp")},
 						},
 						"request": schema.SingleNestedAttribute{
 							MarkdownDescription: "Request executed by this step.",
 							Required:            true,
 							Attributes: map[string]schema.Attribute{
 								"url": schema.StringAttribute{
-									MarkdownDescription: "Target URL (or host for dns/icmp steps).",
-									Required:            true,
+									MarkdownDescription: "Target of the step, at most 2048 characters. `http`: an http(s) URL with a hostname " +
+										"(`https://example.com/health`; a bare domain is rejected); `dns`, `icmp`: a hostname or IP address; " +
+										"`tcp`: `host:port`. May contain `{{variable}}` tokens.",
+									Required:   true,
+									Validators: []validator.String{stringvalidator.UTF8LengthBetween(1, 2048)},
 								},
 								"method": schema.StringAttribute{
 									MarkdownDescription: "HTTP method.",
@@ -320,18 +325,21 @@ func (r *MonitorResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Required:            true,
 				Attributes: map[string]schema.Attribute{
 					"tick_every": schema.Int64Attribute{
-						MarkdownDescription: "Check frequency in seconds.",
+						MarkdownDescription: "Check frequency in seconds, 30 to 86400. The minimum interval also depends on the plan.",
 						Required:            true,
+						Validators:          []validator.Int64{int64validator.Between(30, 86400)},
 					},
 					"timeout": schema.Int64Attribute{
-						MarkdownDescription: "How long to wait for a response in seconds.",
+						MarkdownDescription: "How long to wait for a response in seconds (not milliseconds), at least 5.",
 						Required:            true,
+						Validators:          []validator.Int64{int64validator.AtLeast(5)},
 					},
 					"failure_threshold": schema.Int64Attribute{
-						MarkdownDescription: "Number of consecutive failures before triggering an alarm.",
+						MarkdownDescription: "Number of consecutive failures before triggering an alarm, 1 to 10.",
 						Optional:            true,
 						Computed:            true,
 						Default:             int64default.StaticInt64(1),
+						Validators:          []validator.Int64{int64validator.Between(1, 10)},
 					},
 					"follow_redirects": schema.BoolAttribute{
 						MarkdownDescription: "Whether to follow HTTP redirects.",
@@ -340,10 +348,11 @@ func (r *MonitorResource) Schema(ctx context.Context, req resource.SchemaRequest
 						Default:             booldefault.StaticBool(true),
 					},
 					"location_threshold": schema.Int64Attribute{
-						MarkdownDescription: "Number of locations that must fail before triggering an alarm.",
+						MarkdownDescription: "Number of locations that must fail before triggering an alarm, 1 to 10 and at most the number of `locations`.",
 						Optional:            true,
 						Computed:            true,
 						Default:             int64default.StaticInt64(1),
+						Validators:          []validator.Int64{int64validator.Between(1, 10)},
 					},
 				},
 			},
@@ -422,7 +431,7 @@ func buildMonitorBody(ctx context.Context, diags *diag.Diagnostics, plan *Monito
 				Body:   ptr(reqModel.Body.ValueString()),
 				Header: ptr(headers),
 			},
-			Asserts:         ptr(asserts),
+			Asserts:         asserts,
 			ExtractedValues: ptr(extracted),
 		})
 	}
@@ -430,9 +439,9 @@ func buildMonitorBody(ctx context.Context, diags *diag.Diagnostics, plan *Monito
 	return apiclient.Monitor{
 		Name:                  plan.Name.ValueString(),
 		NotificationChannelId: plan.NotificationChannelId.ValueString(),
-		Locations:             ptr(listToStringSlice(ctx, diags, plan.Locations)),
+		Locations:             listToStringSlice(ctx, diags, plan.Locations),
 		Tags:                  ptr(listToStringSlice(ctx, diags, plan.Tags)),
-		Steps:                 ptr(steps),
+		Steps:                 steps,
 		Options: apiclient.MonitorOptions{
 			TickEvery:         optModel.TickEvery.ValueInt64(),
 			Timeout:           optModel.Timeout.ValueInt64(),
@@ -452,7 +461,7 @@ func monitorToState(ctx context.Context, diags *diag.Diagnostics, monitor *apicl
 	state.Name = types.StringValue(monitor.Name)
 	state.NotificationChannelId = types.StringValue(monitor.NotificationChannelId)
 	state.Locations = stringSliceToList(ctx, diags, monitor.Locations)
-	state.Tags = stringSliceToList(ctx, diags, monitor.Tags)
+	state.Tags = stringSliceToList(ctx, diags, deref(monitor.Tags, nil))
 	state.Paused = types.BoolValue(monitor.Status == apiclient.MonitorStatus(monitorPausedStatus))
 
 	optObj, d := types.ObjectValueFrom(ctx, monitorOptionsAttrTypes(), monitorOptionsModel{
@@ -465,10 +474,7 @@ func monitorToState(ctx context.Context, diags *diag.Diagnostics, monitor *apicl
 	diags.Append(d...)
 	state.Options = optObj
 
-	apiSteps := []apiclient.MonitorTestStep{}
-	if monitor.Steps != nil {
-		apiSteps = append(apiSteps, *monitor.Steps...)
-	}
+	apiSteps := append([]apiclient.MonitorTestStep{}, monitor.Steps...)
 	sort.SliceStable(apiSteps, func(i, j int) bool {
 		return apiSteps[i].ExecNumber < apiSteps[j].ExecNumber
 	})
@@ -496,15 +502,13 @@ func monitorToState(ctx context.Context, diags *diag.Diagnostics, monitor *apicl
 		diags.Append(d...)
 
 		assertModels := []monitorAssertModel{}
-		if s.Asserts != nil {
-			for _, a := range *s.Asserts {
-				assertModels = append(assertModels, monitorAssertModel{
-					Type:     types.StringValue(string(a.Type)),
-					Property: types.StringValue(deref(a.Property, "")),
-					Operator: types.StringValue(string(a.Operator)),
-					Expected: types.StringValue(a.Expected),
-				})
-			}
+		for _, a := range s.Asserts {
+			assertModels = append(assertModels, monitorAssertModel{
+				Type:     types.StringValue(string(a.Type)),
+				Property: types.StringValue(deref(a.Property, "")),
+				Operator: types.StringValue(string(a.Operator)),
+				Expected: types.StringValue(a.Expected),
+			})
 		}
 		assertList, d := types.ListValueFrom(ctx, types.ObjectType{AttrTypes: monitorAssertAttrTypes()}, assertModels)
 		diags.Append(d...)
