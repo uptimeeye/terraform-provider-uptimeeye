@@ -422,7 +422,7 @@ func buildMonitorBody(ctx context.Context, diags *diag.Diagnostics, plan *Monito
 				Body:   ptr(reqModel.Body.ValueString()),
 				Header: ptr(headers),
 			},
-			Asserts:         ptr(asserts),
+			Asserts:         asserts,
 			ExtractedValues: ptr(extracted),
 		})
 	}
@@ -430,9 +430,9 @@ func buildMonitorBody(ctx context.Context, diags *diag.Diagnostics, plan *Monito
 	return apiclient.Monitor{
 		Name:                  plan.Name.ValueString(),
 		NotificationChannelId: plan.NotificationChannelId.ValueString(),
-		Locations:             ptr(listToStringSlice(ctx, diags, plan.Locations)),
+		Locations:             listToStringSlice(ctx, diags, plan.Locations),
 		Tags:                  ptr(listToStringSlice(ctx, diags, plan.Tags)),
-		Steps:                 ptr(steps),
+		Steps:                 steps,
 		Options: apiclient.MonitorOptions{
 			TickEvery:         optModel.TickEvery.ValueInt64(),
 			Timeout:           optModel.Timeout.ValueInt64(),
@@ -452,7 +452,7 @@ func monitorToState(ctx context.Context, diags *diag.Diagnostics, monitor *apicl
 	state.Name = types.StringValue(monitor.Name)
 	state.NotificationChannelId = types.StringValue(monitor.NotificationChannelId)
 	state.Locations = stringSliceToList(ctx, diags, monitor.Locations)
-	state.Tags = stringSliceToList(ctx, diags, monitor.Tags)
+	state.Tags = stringSliceToList(ctx, diags, deref(monitor.Tags, nil))
 	state.Paused = types.BoolValue(monitor.Status == apiclient.MonitorStatus(monitorPausedStatus))
 
 	optObj, d := types.ObjectValueFrom(ctx, monitorOptionsAttrTypes(), monitorOptionsModel{
@@ -465,10 +465,7 @@ func monitorToState(ctx context.Context, diags *diag.Diagnostics, monitor *apicl
 	diags.Append(d...)
 	state.Options = optObj
 
-	apiSteps := []apiclient.MonitorTestStep{}
-	if monitor.Steps != nil {
-		apiSteps = append(apiSteps, *monitor.Steps...)
-	}
+	apiSteps := append([]apiclient.MonitorTestStep{}, monitor.Steps...)
 	sort.SliceStable(apiSteps, func(i, j int) bool {
 		return apiSteps[i].ExecNumber < apiSteps[j].ExecNumber
 	})
@@ -496,15 +493,13 @@ func monitorToState(ctx context.Context, diags *diag.Diagnostics, monitor *apicl
 		diags.Append(d...)
 
 		assertModels := []monitorAssertModel{}
-		if s.Asserts != nil {
-			for _, a := range *s.Asserts {
-				assertModels = append(assertModels, monitorAssertModel{
-					Type:     types.StringValue(string(a.Type)),
-					Property: types.StringValue(deref(a.Property, "")),
-					Operator: types.StringValue(string(a.Operator)),
-					Expected: types.StringValue(a.Expected),
-				})
-			}
+		for _, a := range s.Asserts {
+			assertModels = append(assertModels, monitorAssertModel{
+				Type:     types.StringValue(string(a.Type)),
+				Property: types.StringValue(deref(a.Property, "")),
+				Operator: types.StringValue(string(a.Operator)),
+				Expected: types.StringValue(a.Expected),
+			})
 		}
 		assertList, d := types.ListValueFrom(ctx, types.ObjectType{AttrTypes: monitorAssertAttrTypes()}, assertModels)
 		diags.Append(d...)

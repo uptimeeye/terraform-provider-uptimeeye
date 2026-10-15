@@ -284,7 +284,7 @@ func notificationIntegrationBody(ctx context.Context, diags *diag.Diagnostics, p
 		diags.Append(plan.Email.As(ctx, &m, basetypes.ObjectAsOptions{})...)
 		body.Type = apiclient.Email
 		body.Configuration.Email = &apiclient.EmailConfiguration{
-			To: ptr(listToStringSlice(ctx, diags, m.To)),
+			To: listToStringSlice(ctx, diags, m.To),
 		}
 	case isSet(plan.Webhook):
 		var m webhookIntegrationModel

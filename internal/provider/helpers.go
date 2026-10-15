@@ -80,12 +80,11 @@ func isNotFound(httpResp *http.Response) bool {
 
 // stringSliceToList converts a Go string slice to a types.List, mapping nil to
 // an empty list (the API normalizes nil slices to [] as well).
-func stringSliceToList(ctx context.Context, diags *diag.Diagnostics, values *[]string) types.List {
-	elems := []string{}
-	if values != nil {
-		elems = *values
+func stringSliceToList(ctx context.Context, diags *diag.Diagnostics, values []string) types.List {
+	if values == nil {
+		values = []string{}
 	}
-	list, d := types.ListValueFrom(ctx, types.StringType, elems)
+	list, d := types.ListValueFrom(ctx, types.StringType, values)
 	diags.Append(d...)
 	return list
 }

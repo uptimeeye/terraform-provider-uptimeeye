@@ -74,7 +74,7 @@ func (r *NotificationChannelResource) Create(ctx context.Context, req resource.C
 
 	body := apiclient.PostV1NotificationChannelsJSONRequestBody{
 		Name: plan.Name.ValueString(),
-		Tags: ptr(listToStringSlice(ctx, &resp.Diagnostics, plan.Tags)),
+		Tags: listToStringSlice(ctx, &resp.Diagnostics, plan.Tags),
 	}
 	if resp.Diagnostics.HasError() {
 		return
@@ -134,7 +134,7 @@ func (r *NotificationChannelResource) Update(ctx context.Context, req resource.U
 
 	body := apiclient.PutV1NotificationChannelsNotificationChannelIdJSONRequestBody{
 		Name: plan.Name.ValueString(),
-		Tags: ptr(listToStringSlice(ctx, &resp.Diagnostics, plan.Tags)),
+		Tags: listToStringSlice(ctx, &resp.Diagnostics, plan.Tags),
 	}
 	if resp.Diagnostics.HasError() {
 		return

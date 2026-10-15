@@ -161,7 +161,7 @@ func scheduledTaskBody(ctx context.Context, diags *diag.Diagnostics, plan Schedu
 		Name:                  plan.Name.ValueString(),
 		NotificationChannelId: plan.NotificationChannelId.ValueString(),
 		GracePeriod:           plan.GracePeriod.ValueInt64(),
-		Tags:                  ptr(listToStringSlice(ctx, diags, plan.Tags)),
+		Tags:                  listToStringSlice(ctx, diags, plan.Tags),
 	}
 
 	if !plan.CronTask.IsNull() && !plan.CronTask.IsUnknown() {
