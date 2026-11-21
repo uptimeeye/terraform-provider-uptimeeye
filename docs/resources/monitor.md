@@ -70,6 +70,7 @@ Required:
 Optional:
 
 - `failure_threshold` (Number) Number of consecutive failures before triggering an alarm, 1 to 10.
+- `flap_detection` (Boolean) Whether flapping is detected: the third outage within 60 minutes (at least 12 check intervals) stays open as one flapping outage with one notification, until no check failed for 30 minutes (at least 6 check intervals). Has no effect on monitors checked less often than every 30 minutes.
 - `follow_redirects` (Boolean) Whether to follow HTTP redirects.
 - `location_threshold` (Number) Number of locations that must fail before triggering an alarm, 1 to 10 and at most the number of `locations`.
 

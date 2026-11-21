@@ -32,6 +32,67 @@ components:
         - domain
         - cnameTarget
       type: object
+    AlertSetup:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/AlertSetup.json
+          format: uri
+          readOnly: true
+          type: string
+        completed:
+          type: boolean
+        keepEmail:
+          type: boolean
+        notificationChannelId:
+          type: string
+        ready:
+          description: "A Mobile Push setup of a member whose app is signed in already: it completes once the member confirms it"
+          type: boolean
+        telegramUrl:
+          description: The bot's t.me link with the start code, while the Telegram setup is open; valid for an hour
+          type: string
+        type:
+          enum:
+            - telegram
+            - mobile_push
+          type: string
+      required:
+        - notificationChannelId
+        - type
+        - keepEmail
+        - completed
+        - ready
+      type: object
+    AlertSetupRequest:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/AlertSetupRequest.json
+          format: uri
+          readOnly: true
+          type: string
+        confirm:
+          description: The member confirms a Mobile Push setup that is ready (their app is signed in already), with keepEmail as chosen. Without it such a setup stays open and e-mail stays.
+          type: boolean
+        keepEmail:
+          description: Keep the notification channel's e-mail integration once the new integration works; off by default
+          type: boolean
+        notificationChannelId:
+          description: The notification channel to connect, the organization's Default channel in the wizard
+          minLength: 1
+          type: string
+        type:
+          enum:
+            - telegram
+            - mobile_push
+          type: string
+      required:
+        - notificationChannelId
+        - type
+      type: object
     ApiKey:
       additionalProperties: false
       properties:
@@ -177,6 +238,25 @@ components:
         - property
         - expected
         - actual
+      type: object
+    AssistantSettings:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/AssistantSettings.json
+          format: uri
+          readOnly: true
+          type: string
+        canEdit:
+          description: Whether the member may change the settings (organization admins only)
+          type: boolean
+        logsEnabled:
+          description: "Log access: whether the assistant may read the organization's logs through the read-only logs tools"
+          type: boolean
+      required:
+        - logsEnabled
+        - canEdit
       type: object
     ChannelPost:
       additionalProperties: true
@@ -607,6 +687,61 @@ components:
       required:
         - success
       type: object
+    Device:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/Device.json
+          format: uri
+          readOnly: true
+          type: string
+        appVersion:
+          example: 1.0.0 (42)
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        hasLiveActivityStartToken:
+          description: Whether iOS gave the device a push-to-start token (iOS 17.2+); without one no Live Activity starts
+          type: boolean
+        id:
+          example: dev_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        lastSeenAt:
+          description: When the app last registered the device
+          format: date-time
+          type: string
+        liveActivities:
+          description: Whether an outage starts a Live Activity on this device (iOS)
+          type: boolean
+        locale:
+          example: de-DE
+          type: string
+        muted:
+          description: A muted device gets no push; it stays registered
+          type: boolean
+        name:
+          example: iPhone 16
+          type: string
+        platform:
+          enum:
+            - ios
+            - android
+            - macos
+          type: string
+      required:
+        - id
+        - platform
+        - name
+        - appVersion
+        - locale
+        - muted
+        - liveActivities
+        - hasLiveActivityStartToken
+        - createdAt
+        - lastSeenAt
+      type: object
     DiscordConfiguration:
       additionalProperties: false
       properties:
@@ -645,9 +780,19 @@ components:
     EmailConfiguration:
       additionalProperties: false
       properties:
-        to:
+        recipients:
+          description: "The status of each address: confirmed addresses get alerts, pending ones wait for their owner to confirm, stopped ones were stopped by their owner."
           items:
+            $ref: "#/components/schemas/EmailRecipient"
+          readOnly: true
+          type: array
+        to:
+          description: Up to 10 addresses. A new address that is not a member's gets a confirmation email and receives alerts once its owner confirms.
+          items:
+            format: email
             type: string
+          maxItems: 10
+          minItems: 1
           type: array
       required:
         - to
@@ -700,6 +845,44 @@ components:
         - email
         - category
         - suppressed
+      type: object
+    EmailRecipient:
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+        status:
+          enum:
+            - pending
+            - confirmed
+            - stopped
+          type: string
+      required:
+        - email
+        - status
+      type: object
+    EmailRecipientLinkResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/EmailRecipientLinkResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        email:
+          type: string
+        organizationName:
+          type: string
+        status:
+          enum:
+            - confirmed
+            - stopped
+          type: string
+      required:
+        - status
+        - email
+        - organizationName
       type: object
     EmailResubscribeResponseBody:
       additionalProperties: false
@@ -999,6 +1182,39 @@ components:
       required:
         - conversations
       type: object
+    GetCriticalAlertsResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetCriticalAlertsResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        monitorIds:
+          description: The monitors of the organization for which the member gets Critical Alerts
+          items:
+            type: string
+          type: array
+      required:
+        - monitorIds
+      type: object
+    GetDevicesResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetDevicesResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        devices:
+          items:
+            $ref: "#/components/schemas/Device"
+          type: array
+      required:
+        - devices
+      type: object
     GetIncidentsResponseBody:
       additionalProperties: false
       properties:
@@ -1111,6 +1327,23 @@ components:
           type: array
       required:
         - notificationIntegrations
+      type: object
+    GetOutagesResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/GetOutagesResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        outages:
+          description: Open outages first, then the most recent
+          items:
+            $ref: "#/components/schemas/Outage"
+          type: array
+      required:
+        - outages
       type: object
     GetReportScheduleResponseBody:
       additionalProperties: false
@@ -2115,6 +2348,25 @@ components:
         - userId
         - priceId
       type: object
+    MobilePushConfiguration:
+      additionalProperties: false
+      properties:
+        recipients:
+          default: all
+          description: "all: every member with a registered device; selected: the members in userIds"
+          enum:
+            - all
+            - selected
+          type: string
+        userIds:
+          description: Clerk user ids of the members, with recipients selected
+          items:
+            type: string
+          maxItems: 100
+          type: array
+      required:
+        - recipients
+      type: object
     Monitor:
       additionalProperties: false
       properties:
@@ -2137,6 +2389,11 @@ components:
           items:
             type: string
           type: array
+        logService:
+          description: The service (log field service, service.name or app) whose error and warning lines an outage of the monitor shows, from shortly before it went down. Omitted on update keeps it; empty clears it.
+          example: booking-svc
+          maxLength: 255
+          type: string
         name:
           example: My Website Monitor
           maxLength: 80
@@ -2306,12 +2563,16 @@ components:
       additionalProperties: false
       properties:
         failureThreshold:
-          default: 2
+          default: 3
           description: Number of consecutive failures before triggering an alarm
           format: int64
           maximum: 10
           minimum: 1
           type: integer
+        flapDetection:
+          default: true
+          description: "Whether flapping is detected: the third outage within 60 minutes (at least 12 check intervals) stays open as one flapping outage, with one notification, until no execution failed for 30 minutes (at least 6 check intervals). Monitors checked less often than every 30 minutes are never watched. Off: a down and a recovery notification per outage. A down monitor always needs 2 successful executions in a row to recover."
+          type: boolean
         followRedirects:
           default: true
           description: Whether to follow redirects or not.
@@ -2331,7 +2592,7 @@ components:
           minimum: 30
           type: integer
         timeout:
-          default: 60
+          default: 30
           description: How long to wait for a response from the monitor in seconds.
           format: int64
           minimum: 5
@@ -2543,6 +2804,8 @@ components:
           maxLength: 80
           minLength: 1
           type: string
+        reminders:
+          $ref: "#/components/schemas/NotificationChannelReminders"
         tags:
           items:
             type: string
@@ -2588,6 +2851,35 @@ components:
       required:
         - created_at
         - updated_at
+      type: object
+    NotificationChannelReminders:
+      additionalProperties: false
+      properties:
+        enabled:
+          description: Off for every channel until turned on
+          type: boolean
+        intervalMinutes:
+          default: 15
+          description: Minutes from the start of the outage to the first reminder and between reminders
+          enum:
+            - 5
+            - 10
+            - 15
+            - 30
+            - 60
+          format: int64
+          type: integer
+        maxCount:
+          default: 6
+          description: Reminders at most; 0 until the outage ends
+          format: int64
+          maximum: 6
+          minimum: 0
+          type: integer
+      required:
+        - enabled
+        - intervalMinutes
+        - maxCount
       type: object
     NotificationChannelTarget:
       additionalProperties: false
@@ -2641,6 +2933,7 @@ components:
             - webhook
             - telegram
             - pagerduty
+            - mobile_push
           example: slack
           type: string
       required:
@@ -2655,6 +2948,8 @@ components:
           $ref: "#/components/schemas/DiscordConfiguration"
         email:
           $ref: "#/components/schemas/EmailConfiguration"
+        mobilePush:
+          $ref: "#/components/schemas/MobilePushConfiguration"
         pagerduty:
           $ref: "#/components/schemas/PagerDutyConfiguration"
         slack:
@@ -2748,6 +3043,377 @@ components:
         - up_scheduled_tasks
         - down_scheduled_tasks
       type: object
+    Outage:
+      additionalProperties: false
+      properties:
+        acknowledgement:
+          $ref: "#/components/schemas/OutageAcknowledgement"
+        flapOutages:
+          description: "Flapping: the outages within the flap window, this one included"
+          example: 3
+          format: int64
+          type: integer
+        flapWindowMinutes:
+          description: "Flapping: the flap window in minutes"
+          example: 60
+          format: int64
+          type: integer
+        flapping:
+          description: "The object is flapping: this is its third outage within the flap window (60 minutes, at least 12 intervals). It stays open, with further down and recovery notifications paused, until no execution failed (task: no missed or failed beat) for 30 minutes, at least 6 intervals"
+          type: boolean
+        id:
+          example: out_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        objectId:
+          example: mon_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        objectName:
+          example: shop.mueller-moebel.de
+          type: string
+        objectStatus:
+          description: The object's status now
+          enum:
+            - down
+            - up
+            - paused
+            - unknown
+          type: string
+        objectType:
+          enum:
+            - monitor
+            - scheduled_task
+            - log_alert
+          type: string
+        open:
+          description: Still down; false once resolved
+          type: boolean
+        reminders:
+          $ref: "#/components/schemas/OutageReminders"
+        resolution:
+          description: "Why it ended: up again, the object was paused, or anything else (a newer outage replaced it, a log alert's condition changed)"
+          enum:
+            - recovered
+            - paused
+            - ended
+          type: string
+        resolvedAt:
+          format: date-time
+          type: string
+        startedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - objectType
+        - objectId
+        - objectName
+        - objectStatus
+        - open
+        - startedAt
+        - flapping
+      type: object
+    OutageAcknowledgement:
+      additionalProperties: false
+      properties:
+        at:
+          format: date-time
+          type: string
+        firstName:
+          example: Christian
+          type: string
+        lastName:
+          example: Stegmann
+          type: string
+        userId:
+          example: user_2abc
+          type: string
+      required:
+        - userId
+        - firstName
+        - lastName
+        - at
+      type: object
+    OutageCause:
+      additionalProperties: false
+      properties:
+        comparator:
+          enum:
+            - gt
+            - lt
+          type: string
+        executionId:
+          type: string
+        gracePeriodMinutes:
+          format: int64
+          type: integer
+        lastBeatAt:
+          format: date-time
+          type: string
+        lastBeatType:
+          enum:
+            - start
+            - success
+            - fail
+          type: string
+        locations:
+          items:
+            $ref: "#/components/schemas/OutageCauseLocation"
+          type: array
+        query:
+          type: string
+        threshold:
+          format: int64
+          type: integer
+        value:
+          format: int64
+          type: integer
+        windowMinutes:
+          format: int64
+          type: integer
+      type: object
+    OutageCauseLocation:
+      additionalProperties: false
+      properties:
+        error:
+          example: context deadline exceeded
+          type: string
+        failedAssertions:
+          items:
+            $ref: "#/components/schemas/OutageFailedAssertion"
+          type: array
+        location:
+          example: eu-central-1
+          type: string
+        responseExcerpt:
+          description: The start of the response body, at most 200 characters
+          type: string
+        statusCode:
+          example: 503
+          format: int64
+          type: integer
+      required:
+        - location
+      type: object
+    OutageDetails:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/OutageDetails.json
+          format: uri
+          readOnly: true
+          type: string
+        acknowledgement:
+          $ref: "#/components/schemas/OutageAcknowledgement"
+        cause:
+          $ref: "#/components/schemas/OutageCause"
+          description: Why the object went down; omitted when nothing is known (step results are kept 7 days)
+        flapOutages:
+          description: "Flapping: the outages within the flap window, this one included"
+          example: 3
+          format: int64
+          type: integer
+        flapWindowMinutes:
+          description: "Flapping: the flap window in minutes"
+          example: 60
+          format: int64
+          type: integer
+        flapping:
+          description: "The object is flapping: this is its third outage within the flap window (60 minutes, at least 12 intervals). It stays open, with further down and recovery notifications paused, until no execution failed (task: no missed or failed beat) for 30 minutes, at least 6 intervals"
+          type: boolean
+        id:
+          example: out_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        logs:
+          $ref: "#/components/schemas/OutageLogs"
+          description: The error and warning lines of the monitor's log service from shortly before the outage began; omitted when the monitor has no log service
+        objectId:
+          example: mon_tXlzMyixOqgBXtD8Myc8R
+          type: string
+        objectName:
+          example: shop.mueller-moebel.de
+          type: string
+        objectStatus:
+          description: The object's status now
+          enum:
+            - down
+            - up
+            - paused
+            - unknown
+          type: string
+        objectType:
+          enum:
+            - monitor
+            - scheduled_task
+            - log_alert
+          type: string
+        open:
+          description: Still down; false once resolved
+          type: boolean
+        reminders:
+          $ref: "#/components/schemas/OutageReminders"
+        resolution:
+          description: "Why it ended: up again, the object was paused, or anything else (a newer outage replaced it, a log alert's condition changed)"
+          enum:
+            - recovered
+            - paused
+            - ended
+          type: string
+        resolvedAt:
+          format: date-time
+          type: string
+        startedAt:
+          format: date-time
+          type: string
+        timeline:
+          items:
+            $ref: "#/components/schemas/OutageTimelineItem"
+          type: array
+      required:
+        - timeline
+        - id
+        - objectType
+        - objectId
+        - objectName
+        - objectStatus
+        - open
+        - startedAt
+        - flapping
+      type: object
+    OutageFailedAssertion:
+      additionalProperties: false
+      properties:
+        actual:
+          example: "503"
+          type: string
+        expected:
+          example: 2xx
+          type: string
+        operator:
+          example: equals
+          type: string
+        property:
+          type: string
+        type:
+          example: statusCode
+          type: string
+      required:
+        - type
+        - operator
+        - expected
+        - actual
+      type: object
+    OutageLogs:
+      additionalProperties: false
+      properties:
+        available:
+          type: boolean
+        end:
+          description: The outage's end, or now while it is open
+          format: date-time
+          type: string
+        query:
+          description: The LogsQL filter the lines were read with
+          type: string
+        reason:
+          enum:
+            - plan_without_logs
+            - no_log_tenant
+            - unavailable
+          type: string
+        rows:
+          description: At most 5, newest first, every field as a string (messages cut at 1000 characters)
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          type: array
+        service:
+          example: booking-svc
+          type: string
+        start:
+          description: 2 minutes before the outage began
+          format: date-time
+          type: string
+        truncated:
+          description: More lines matched than shown
+          type: boolean
+      required:
+        - service
+        - query
+        - start
+        - end
+        - available
+        - rows
+        - truncated
+      type: object
+    OutageReminders:
+      additionalProperties: false
+      properties:
+        intervalMinutes:
+          example: 15
+          format: int64
+          type: integer
+        maxCount:
+          description: "0: until the outage ends"
+          format: int64
+          type: integer
+        nextAt:
+          description: When the next reminder goes out; omitted once the outage is acknowledged or over or the maximum is reached
+          format: date-time
+          type: string
+        sent:
+          format: int64
+          type: integer
+      required:
+        - intervalMinutes
+        - maxCount
+        - sent
+      type: object
+    OutageTimelineItem:
+      additionalProperties: false
+      properties:
+        acknowledgement:
+          $ref: "#/components/schemas/OutageAcknowledgement"
+        at:
+          format: date-time
+          type: string
+        channelId:
+          type: string
+        channelName:
+          type: string
+        kind:
+          enum:
+            - started
+            - notification
+            - acknowledged
+            - resolved
+          type: string
+        notificationKind:
+          enum:
+            - down
+            - recovered
+            - acknowledged
+            - reminder
+          type: string
+        notificationStatus:
+          enum:
+            - pending
+            - sending
+            - delivered
+            - failed
+            - canceled
+          type: string
+        resolution:
+          enum:
+            - recovered
+            - paused
+            - ended
+          type: string
+      required:
+        - at
+        - kind
+      type: object
     PagerDutyConfiguration:
       additionalProperties: false
       properties:
@@ -2757,6 +3423,166 @@ components:
           type: string
       required:
         - routingKey
+      type: object
+    PatchDeviceRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PatchDeviceRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        liveActivities:
+          description: "iOS: whether an outage starts a Live Activity"
+          type: boolean
+        liveActivityStartToken:
+          description: "iOS 17.2+: the push-to-start token of Live Activities (hex); empty clears it"
+          maxLength: 4096
+          type: string
+        muted:
+          type: boolean
+      type: object
+    Plan:
+      additionalProperties: false
+      properties:
+        allowCustomDomain:
+          type: boolean
+        allowPerComponentSubscription:
+          type: boolean
+        allowWhiteLabel:
+          type: boolean
+        checkIntervalSeconds:
+          description: Shortest check interval of a monitor, in seconds
+          format: int64
+          type: integer
+        currency:
+          description: ISO 4217 currency of the prices
+          example: EUR
+          type: string
+        id:
+          description: Stable plan id
+          enum:
+            - free
+            - pro
+            - agentur
+          type: string
+        logRetentionDays:
+          description: Days logs are kept; 0 = no Logs
+          format: int64
+          type: integer
+        maxCustomDomains:
+          description: Custom domains of status pages
+          format: int64
+          type: integer
+        maxLogAlerts:
+          description: Log alerts, paused ones included
+          format: int64
+          type: integer
+        maxLogGbMonth:
+          description: Logs ingested a calendar month, in GB; 0 = no Logs
+          format: int64
+          type: integer
+        maxMonitorSteps:
+          description: Steps of one monitor
+          format: int64
+          type: integer
+        maxMonitors:
+          description: Active monitors
+          format: int64
+          type: integer
+        maxProjects:
+          format: int64
+          type: integer
+        maxRegions:
+          description: Locations a monitor checks from
+          format: int64
+          type: integer
+        maxScheduledTasks:
+          description: Active scheduled tasks
+          format: int64
+          type: integer
+        maxStatusPages:
+          format: int64
+          type: integer
+        maxSubscribers:
+          description: Subscribers of a status page; -1 = unlimited
+          format: int64
+          type: integer
+        maxUsers:
+          description: "Seats: members plus pending invitations"
+          format: int64
+          type: integer
+        monthlyPriceCents:
+          description: Price of a month, excl. VAT, in cents
+          example: 2900
+          format: int64
+          type: integer
+        monthlyPriceId:
+          description: Stripe price of the monthly billing cycle; omitted when there is none
+          type: string
+        name:
+          description: The plan's name as stored (Free, Pro, Agentur)
+          example: Pro
+          type: string
+        subscriptionId:
+          description: The plan's row a trial starts on (the monthly row; Free's only row)
+          example: sub_agentur_monthly
+          type: string
+        trialDays:
+          description: Days of the free trial; 0 = no trial
+          example: 14
+          format: int64
+          type: integer
+        yearlyPriceCents:
+          description: Exact price of a year, excl. VAT, in cents (the yearly invoice total)
+          example: 29000
+          format: int64
+          type: integer
+        yearlyPriceId:
+          description: Stripe price of the yearly billing cycle; omitted when there is none
+          type: string
+      required:
+        - id
+        - name
+        - currency
+        - monthlyPriceCents
+        - yearlyPriceCents
+        - trialDays
+        - subscriptionId
+        - maxMonitors
+        - maxScheduledTasks
+        - checkIntervalSeconds
+        - maxRegions
+        - maxStatusPages
+        - maxUsers
+        - maxProjects
+        - maxMonitorSteps
+        - maxCustomDomains
+        - maxSubscribers
+        - maxLogGbMonth
+        - logRetentionDays
+        - maxLogAlerts
+        - allowCustomDomain
+        - allowWhiteLabel
+        - allowPerComponentSubscription
+      type: object
+    PlansResponse:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PlansResponse.json
+          format: uri
+          readOnly: true
+          type: string
+        plans:
+          description: Free, Pro and Agentur, in that order; a plan without a subscriptions row is left out
+          items:
+            $ref: "#/components/schemas/Plan"
+          type: array
+      required:
+        - plans
       type: object
     PostApiKeyRequestBody:
       additionalProperties: false
@@ -2781,6 +3607,43 @@ components:
           type: string
       required:
         - name
+      type: object
+    PostDeviceRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PostDeviceRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        appVersion:
+          example: 1.0.0 (42)
+          maxLength: 32
+          type: string
+        locale:
+          example: de-DE
+          maxLength: 16
+          type: string
+        name:
+          description: Shown in the member's device list
+          example: iPhone 16
+          maxLength: 100
+          type: string
+        platform:
+          enum:
+            - ios
+            - android
+            - macos
+          type: string
+        pushToken:
+          description: The FCM registration token of this installation
+          maxLength: 4096
+          minLength: 1
+          type: string
+      required:
+        - platform
+        - pushToken
       type: object
     PostMonitorExecutionResultRequestBody:
       additionalProperties: false
@@ -2969,56 +3832,67 @@ components:
         - windowStart
         - windowEnd
       type: object
-    ProxyRequest:
+    PutAssistantSettingsRequestBody:
       additionalProperties: false
       properties:
         $schema:
           description: A URL to the JSON Schema for this object.
-          example: https://api.uptimeeye.com/schemas/ProxyRequest.json
+          example: https://api.uptimeeye.com/schemas/PutAssistantSettingsRequestBody.json
           format: uri
           readOnly: true
           type: string
-        body:
-          type: string
-        headers:
-          additionalProperties:
-            type: string
-          type: object
-        method:
-          example: GET
-          type: string
-        url:
-          example: https://www.mmueller.io
-          type: string
-      required:
-        - url
-        - method
-      type: object
-    ProxyResponse:
-      additionalProperties: false
-      properties:
-        $schema:
-          description: A URL to the JSON Schema for this object.
-          example: https://api.uptimeeye.com/schemas/ProxyResponse.json
-          format: uri
-          readOnly: true
-          type: string
-        body:
-          type: string
-        headers:
-          additionalProperties:
-            type: string
-          type: object
-        isSSL:
+        logsEnabled:
+          description: Switch Log access on or off; absent keeps it
           type: boolean
-        statusCode:
-          format: int64
-          type: integer
+      type: object
+    PutCriticalAlertRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PutCriticalAlertRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        "on":
+          description: Whether a down alert and the reminders of this monitor reach the member as a Critical Alert
+          type: boolean
       required:
-        - statusCode
-        - headers
-        - body
-        - isSSL
+        - "on"
+      type: object
+    PutCriticalAlertResponseBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PutCriticalAlertResponseBody.json
+          format: uri
+          readOnly: true
+          type: string
+        monitorId:
+          type: string
+        "on":
+          type: boolean
+      required:
+        - monitorId
+        - "on"
+      type: object
+    PutDeviceLiveActivityRequestBody:
+      additionalProperties: false
+      properties:
+        $schema:
+          description: A URL to the JSON Schema for this object.
+          example: https://api.uptimeeye.com/schemas/PutDeviceLiveActivityRequestBody.json
+          format: uri
+          readOnly: true
+          type: string
+        pushToken:
+          description: The push token iOS gave the Live Activity running on this device (hex)
+          maxLength: 4096
+          minLength: 1
+          type: string
+      required:
+        - pushToken
       type: object
     PutReportScheduleResponseBody:
       additionalProperties: false
@@ -3201,6 +4075,10 @@ components:
           format: uri
           readOnly: true
           type: string
+        beatToken:
+          description: "The task's beat credential: the job reports to /v1/beat/{beatToken}. Treat it like a secret; the task id is public (status pages, incidents) and reports nothing."
+          readOnly: true
+          type: string
         createdAt:
           format: date-time
           readOnly: true
@@ -3282,6 +4160,9 @@ components:
     ScheduledTaskHealthDetails:
       additionalProperties: false
       properties:
+        beatToken:
+          description: "The task's beat credential: the job reports to /v1/beat/{beatToken}. Treat it like a secret."
+          type: string
         cronTask:
           $ref: "#/components/schemas/CronTask"
         downSince:
@@ -3328,6 +4209,7 @@ components:
         - type
         - nextBeat
         - gracePeriod
+        - beatToken
       type: object
     ScheduledTaskLimits:
       additionalProperties: false
@@ -3616,13 +4498,30 @@ components:
           type: string
         lastError:
           type: string
+        lastErrorCode:
+          description: "lastError as a stable code the app translates: waiting_for_cname, waiting_for_txt, domain_in_use, txt_missing, txt_missing_released, ingress_failed, certificate_check_failed; absent when the message has none, then only lastError has the text"
+          type: string
+        lastErrorParams:
+          additionalProperties:
+            type: string
+          description: the parameters of lastErrorCode (target, record, reason); their values are in lastError's text too
+          type: object
         status:
+          type: string
+        txtRecordName:
+          description: name of the TXT record that proves control of the hostname
+          example: _uptimeeye-challenge.status.acme.com
+          type: string
+        txtRecordValue:
+          description: "value of that TXT record: this domain's verification token; keep the record while the domain is in use"
           type: string
       required:
         - id
         - hostname
         - status
         - createdAt
+        - txtRecordName
+        - txtRecordValue
       type: object
     StatusPageRouteCheckResponseBody:
       additionalProperties: false
@@ -3735,6 +4634,15 @@ components:
           type: string
         error:
           type: string
+        errorCode:
+          description: why the step could not be carried out, as a stable code the app translates (e.g. connection_refused, timeout, dns_not_found, unknown); absent when the pinger reported none, then only error has the text
+          maxLength: 64
+          type: string
+        errorParams:
+          additionalProperties:
+            type: string
+          description: the parameters of errorCode (e.g. addr, host, url, reason, message); their values are in error's text too
+          type: object
         response:
           $ref: "#/components/schemas/Response"
         sslInfo:
@@ -4760,17 +5668,65 @@ paths:
         - jwt: []
       tags:
         - api-key
-  /v1/beat/{scheduledTaskId}:
+  /v1/assistant/settings:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistantSettings"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: Get the assistant settings
+      tags:
+        - assistant
+    put:
+      description: Organization admins only. With Log access on, the assistant reads the organization's logs and sends the lines it reads to its model provider.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutAssistantSettingsRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistantSettings"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: Change the assistant settings
+      tags:
+        - assistant
+  /v1/beat/{beatToken}:
     get:
       parameters:
         - in: header
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "204":
@@ -4790,10 +5746,12 @@ paths:
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "200":
@@ -4813,10 +5771,12 @@ paths:
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "204":
@@ -4830,17 +5790,19 @@ paths:
       security: []
       tags:
         - beat
-  /v1/beat/{scheduledTaskId}/fail:
+  /v1/beat/{beatToken}/fail:
     get:
       parameters:
         - in: header
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "204":
@@ -4860,10 +5822,12 @@ paths:
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "200":
@@ -4883,10 +5847,12 @@ paths:
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "204":
@@ -4900,17 +5866,19 @@ paths:
       security: []
       tags:
         - beat
-  /v1/beat/{scheduledTaskId}/start:
+  /v1/beat/{beatToken}/start:
     get:
       parameters:
         - in: header
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "204":
@@ -4930,10 +5898,12 @@ paths:
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "200":
@@ -4953,10 +5923,12 @@ paths:
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "204":
@@ -4970,17 +5942,19 @@ paths:
       security: []
       tags:
         - beat
-  /v1/beat/{scheduledTaskId}/success:
+  /v1/beat/{beatToken}/success:
     get:
       parameters:
         - in: header
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "204":
@@ -5000,10 +5974,12 @@ paths:
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "200":
@@ -5023,10 +5999,12 @@ paths:
           name: User-Agent
           schema:
             type: string
-        - in: path
-          name: scheduledTaskId
+        - description: The task's beatToken (not its id).
+          in: path
+          name: beatToken
           required: true
           schema:
+            description: The task's beatToken (not its id).
             type: string
       responses:
         "204":
@@ -5108,6 +6086,216 @@ paths:
         - jwt: []
       tags:
         - chat
+  /v1/critical-alerts:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCriticalAlertsResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: List my Critical Alerts
+      tags:
+        - critical-alert
+  /v1/devices:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetDevicesResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: List my devices
+      tags:
+        - device
+    post:
+      description: Stores the device of the signed-in member under its push token, or refreshes it when the token is known. The app calls it on every start with push turned on.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostDeviceRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: Register this device for push
+      tags:
+        - device
+  /v1/devices/{deviceId}:
+    delete:
+      description: Removes the device and its push token.
+      parameters:
+        - in: path
+          name: deviceId
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: Sign out a device
+      tags:
+        - device
+    patch:
+      description: Mutes or unmutes the device, switches its Live Activities (iOS) and stores its push-to-start token. A field left out keeps its value.
+      parameters:
+        - in: path
+          name: deviceId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchDeviceRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Device"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: Change a device
+      tags:
+        - device
+  /v1/devices/{deviceId}/live-activity:
+    put:
+      description: The app reports the push token iOS gave the outage Live Activity running on this device, so the backend can update and end it. 404 when the device shows no running activity.
+      parameters:
+        - in: path
+          name: deviceId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutDeviceLiveActivityRequestBody"
+        required: true
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: Store the Live Activity's push token
+      tags:
+        - device
+  /v1/email/alert-recipients/confirm:
+    post:
+      description: The owner of an address that an organization added to an email integration agrees to its alert emails, with the token of the confirmation email.
+      parameters:
+        - description: The recipient's token from the link
+          explode: false
+          in: query
+          name: token
+          required: true
+          schema:
+            description: The recipient's token from the link
+            maxLength: 128
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailRecipientLinkResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      summary: Confirm alert emails to an address
+      tags:
+        - email
+  /v1/email/alert-recipients/stop:
+    post:
+      description: Ends an organization's alert emails to the address of the token. Accepts the link of the email and a one-click unsubscribe of the mail client (RFC 8058).
+      parameters:
+        - description: The recipient's token from the link
+          explode: false
+          in: query
+          name: token
+          required: true
+          schema:
+            description: The recipient's token from the link
+            maxLength: 128
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailRecipientLinkResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      summary: Stop alert emails to an address
+      tags:
+        - email
   /v1/email/resubscribe:
     post:
       parameters:
@@ -6069,6 +7257,39 @@ paths:
         - apiKey: []
       tags:
         - monitors
+  /v1/monitors/{monitorId}/critical-alert:
+    put:
+      description: With it on, a down alert and the reminders of the monitor reach the member's devices as a Critical Alert (iOS, needs Apple's entitlement in the app) and in the Android channel Critical Alerts.
+      parameters:
+        - in: path
+          name: monitorId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PutCriticalAlertRequestBody"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PutCriticalAlertResponseBody"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: Turn my Critical Alert on a monitor on or off
+      tags:
+        - critical-alert
   /v1/monitors/{monitorId}/executions:
     get:
       parameters:
@@ -6694,6 +7915,72 @@ paths:
         - apiKey: []
       tags:
         - notification
+  /v1/onboarding/alert-setup:
+    delete:
+      description: "The member stays on e-mail: integrations already added stay, and nothing removes e-mail later."
+      operationId: delete-alert-setup
+      responses:
+        "204":
+          description: No Content
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: Cancel the Telegram or Mobile Push setup
+      tags:
+        - onboarding
+    get:
+      description: 404 when the member started none in the organization.
+      operationId: get-alert-setup
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertSetup"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: The member's Telegram or Mobile Push setup
+      tags:
+        - onboarding
+    put:
+      description: Starts the member's setup of Telegram (a t.me link of the bot) or Mobile Push (adds the integration) for a notification channel. Once that integration works, the notification channel's e-mail integration is removed unless keepEmail is set.
+      operationId: put-alert-setup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AlertSetupRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AlertSetup"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: Start connecting Telegram or Mobile Push
+      tags:
+        - onboarding
   /v1/onboarding/organization/selected:
     post:
       requestBody:
@@ -6775,19 +8062,52 @@ paths:
         - apiKey: []
       tags:
         - organization
-  /v1/proxy:
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ProxyRequest"
+  /v1/outages:
+    get:
+      description: "The organization's outages of monitors, scheduled tasks and log alerts: open ones first, then the most recent."
+      parameters:
+        - description: open lists only the outages still open
+          explode: false
+          in: query
+          name: state
+          schema:
+            default: all
+            description: open lists only the outages still open
+            enum:
+              - open
+              - all
+            type: string
+        - description: "With objectId: the outages of one object"
+          explode: false
+          in: query
+          name: objectType
+          schema:
+            description: "With objectId: the outages of one object"
+            enum:
+              - monitor
+              - scheduled_task
+              - log_alert
+            type: string
+        - explode: false
+          in: query
+          name: objectId
+          schema:
+            type: string
+        - explode: false
+          in: query
+          name: limit
+          schema:
+            default: 50
+            format: int64
+            maximum: 200
+            minimum: 1
+            type: integer
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProxyResponse"
+                $ref: "#/components/schemas/GetOutagesResponseBody"
           description: OK
         default:
           content:
@@ -6798,8 +8118,85 @@ paths:
       security:
         - jwt: []
         - apiKey: []
+      summary: List outages
       tags:
-        - proxy
+        - outage
+  /v1/outages/{outageId}:
+    get:
+      description: One outage with its cause and its timeline (start, notifications sent, end).
+      parameters:
+        - in: path
+          name: outageId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OutageDetails"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+        - apiKey: []
+      summary: Get an outage
+      tags:
+        - outage
+  /v1/outages/{outageId}/acknowledge:
+    post:
+      description: "The signed-in member takes the open outage over (\"Christian is on it\"), once for everyone; the object's notification channel announces it. The same member again changes nothing. 409 when the outage is over or another member acknowledged it first. Session tokens only: an acknowledgement names a person."
+      parameters:
+        - in: path
+          name: outageId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OutageDetails"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security:
+        - jwt: []
+      summary: Acknowledge an outage
+      tags:
+        - outage
+  /v1/plans:
+    get:
+      description: Every plan with its limits and features, prices (monthly and the exact yearly total, in cents), trial days and Stripe prices. Numbers and flags only, no display text.
+      operationId: list-plans
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlansResponse"
+          description: OK
+        default:
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorModel"
+          description: Error
+      security: []
+      summary: List the plans
+      tags:
+        - subscription
   /v1/resultRedirect/{executionId}:
     get:
       parameters:
@@ -7742,7 +9139,6 @@ paths:
           description: Error
       security:
         - jwt: []
-        - apiKey: []
       tags:
         - subscription
   /v1/subscription/enforcement-preview:
@@ -7819,6 +9215,8 @@ paths:
         - subscription
   /v1/subscription/trial-options:
     get:
+      deprecated: true
+      description: "Deprecated: use GET /v1/plans."
       responses:
         "200":
           content:
@@ -7858,7 +9256,6 @@ paths:
           description: Error
       security:
         - jwt: []
-        - apiKey: []
       tags:
         - subscription
   /v1/subscription/trial/status:
@@ -8204,6 +9601,11 @@ paths:
       security: []
   /webhook/telegram:
     post:
+      parameters:
+        - in: header
+          name: X-Telegram-Bot-Api-Secret-Token
+          schema:
+            type: string
       requestBody:
         content:
           application/json:

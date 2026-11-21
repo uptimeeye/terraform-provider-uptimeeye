@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- `uptimeeye_monitor`: `options.flap_detection` (default `true`) switches the
+  detection of flapping monitors. Terraform now owns the switch: a monitor
+  with it off in the app gets it back on unless the configuration sets `false`.
 - Regenerate the API client from the current UptimeEye API.
 - Validate at plan time what the API now rejects: names of monitors,
   scheduled tasks, notification channels and status pages of 1 to 80

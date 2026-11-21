@@ -287,7 +287,7 @@ func notificationIntegrationBody(ctx context.Context, diags *diag.Diagnostics, p
 		diags.Append(plan.Email.As(ctx, &m, basetypes.ObjectAsOptions{})...)
 		body.Type = apiclient.Email
 		body.Configuration.Email = &apiclient.EmailConfiguration{
-			To: listToStringSlice(ctx, diags, m.To),
+			To: toEmails(listToStringSlice(ctx, diags, m.To)),
 		}
 	case isSet(plan.Webhook):
 		var m webhookIntegrationModel
@@ -428,7 +428,7 @@ func (r *NotificationIntegrationResource) Read(ctx context.Context, req resource
 		if cfg := integration.Configuration.Email; cfg != nil {
 			clearIntegrationBlocks(&state)
 			obj, d := types.ObjectValueFrom(ctx, emailIntegrationAttrTypes, emailIntegrationModel{
-				To: stringSliceToList(ctx, &resp.Diagnostics, cfg.To),
+				To: stringSliceToList(ctx, &resp.Diagnostics, fromEmails(cfg.To)),
 			})
 			resp.Diagnostics.Append(d...)
 			state.Email = obj
