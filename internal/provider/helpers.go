@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 	"gitlab.com/uptimeeye/terraform-provider-uptimeeye/internal/apiclient"
 )
 
@@ -141,4 +142,22 @@ func webhookUrlValidators() []validator.String {
 		stringvalidator.UTF8LengthAtMost(2048),
 		stringvalidator.RegexMatches(regexp.MustCompile(`^https://[^/?#\s]+`), "must be an https URL with a hostname, e.g. https://hooks.example.com/alerts"),
 	}
+}
+
+// toEmails and fromEmails convert between plain strings and the generated
+// client's e-mail type, which is a string with a format check on decode.
+func toEmails(in []string) []openapi_types.Email {
+	out := make([]openapi_types.Email, len(in))
+	for i, s := range in {
+		out[i] = openapi_types.Email(s)
+	}
+	return out
+}
+
+func fromEmails(in []openapi_types.Email) []string {
+	out := make([]string, len(in))
+	for i, e := range in {
+		out[i] = string(e)
+	}
+	return out
 }

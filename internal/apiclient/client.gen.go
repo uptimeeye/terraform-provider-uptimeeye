@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/oapi-codegen/runtime"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 const (
@@ -56,12 +57,25 @@ const (
 	AssertResultTypeStatusCode     AssertResultType = "statusCode"
 )
 
+// Defines values for EmailRecipientStatus.
+const (
+	Confirmed EmailRecipientStatus = "confirmed"
+	Pending   EmailRecipientStatus = "pending"
+	Stopped   EmailRecipientStatus = "stopped"
+)
+
 // Defines values for ExtractedValuesType.
 const (
 	HttpBodyJson ExtractedValuesType = "http_body_json"
 	HttpBodyRaw  ExtractedValuesType = "http_body_raw"
 	HttpHeader   ExtractedValuesType = "http_header"
 	StatusCode   ExtractedValuesType = "status_code"
+)
+
+// Defines values for MobilePushConfigurationRecipients.
+const (
+	All      MobilePushConfigurationRecipients = "all"
+	Selected MobilePushConfigurationRecipients = "selected"
 )
 
 // Defines values for MonitorStatus.
@@ -103,15 +117,25 @@ const (
 	NotificationTypeTest          NotificationType = "test"
 )
 
+// Defines values for NotificationChannelRemindersIntervalMinutes.
+const (
+	N10 NotificationChannelRemindersIntervalMinutes = 10
+	N15 NotificationChannelRemindersIntervalMinutes = 15
+	N30 NotificationChannelRemindersIntervalMinutes = 30
+	N5  NotificationChannelRemindersIntervalMinutes = 5
+	N60 NotificationChannelRemindersIntervalMinutes = 60
+)
+
 // Defines values for NotificationIntegrationType.
 const (
-	Discord   NotificationIntegrationType = "discord"
-	Email     NotificationIntegrationType = "email"
-	Pagerduty NotificationIntegrationType = "pagerduty"
-	Slack     NotificationIntegrationType = "slack"
-	Teams     NotificationIntegrationType = "teams"
-	Telegram  NotificationIntegrationType = "telegram"
-	Webhook   NotificationIntegrationType = "webhook"
+	Discord    NotificationIntegrationType = "discord"
+	Email      NotificationIntegrationType = "email"
+	MobilePush NotificationIntegrationType = "mobile_push"
+	Pagerduty  NotificationIntegrationType = "pagerduty"
+	Slack      NotificationIntegrationType = "slack"
+	Teams      NotificationIntegrationType = "teams"
+	Telegram   NotificationIntegrationType = "telegram"
+	Webhook    NotificationIntegrationType = "webhook"
 )
 
 // Defines values for ResolveHostResponseBodyLanguage.
@@ -264,8 +288,21 @@ type DiscordConfiguration struct {
 
 // EmailConfiguration defines model for EmailConfiguration.
 type EmailConfiguration struct {
-	To []string `json:"to"`
+	// Recipients The status of each address: confirmed addresses get alerts, pending ones wait for their owner to confirm, stopped ones were stopped by their owner.
+	Recipients *[]EmailRecipient `json:"recipients,omitempty"`
+
+	// To Up to 10 addresses. A new address that is not a member's gets a confirmation email and receives alerts once its owner confirms.
+	To []openapi_types.Email `json:"to"`
 }
+
+// EmailRecipient defines model for EmailRecipient.
+type EmailRecipient struct {
+	Email  string               `json:"email"`
+	Status EmailRecipientStatus `json:"status"`
+}
+
+// EmailRecipientStatus defines model for EmailRecipient.Status.
+type EmailRecipientStatus string
 
 // ErrorDetail defines model for ErrorDetail.
 type ErrorDetail struct {
@@ -493,6 +530,18 @@ type LocationsResponseBody struct {
 	Locations []string `json:"locations"`
 }
 
+// MobilePushConfiguration defines model for MobilePushConfiguration.
+type MobilePushConfiguration struct {
+	// Recipients all: every member with a registered device; selected: the members in userIds
+	Recipients MobilePushConfigurationRecipients `json:"recipients"`
+
+	// UserIds Clerk user ids of the members, with recipients selected
+	UserIds *[]string `json:"userIds,omitempty"`
+}
+
+// MobilePushConfigurationRecipients all: every member with a registered device; selected: the members in userIds
+type MobilePushConfigurationRecipients string
+
 // Monitor defines model for Monitor.
 type Monitor struct {
 	// Schema A URL to the JSON Schema for this object.
@@ -502,7 +551,10 @@ type Monitor struct {
 	Favicon   *string  `json:"favicon,omitempty"`
 	Id        *string  `json:"id,omitempty"`
 	Locations []string `json:"locations"`
-	Name      string   `json:"name"`
+
+	// LogService The service (log field service, service.name or app) whose error and warning lines an outage of the monitor shows, from shortly before it went down. Omitted on update keeps it; empty clears it.
+	LogService *string `json:"logService,omitempty"`
+	Name       string  `json:"name"`
 
 	// NotificationChannelId The ID of the Notification channel associated with the monitor.
 	NotificationChannelId string         `json:"notificationChannelId"`
@@ -570,6 +622,9 @@ type MonitorLimits struct {
 type MonitorOptions struct {
 	// FailureThreshold Number of consecutive failures before triggering an alarm
 	FailureThreshold int64 `json:"failureThreshold"`
+
+	// FlapDetection Whether flapping is detected: the third outage within 60 minutes (at least 12 check intervals) stays open as one flapping outage, with one notification, until no execution failed for 30 minutes (at least 6 check intervals). Monitors checked less often than every 30 minutes are never watched. Off: a down and a recovery notification per outage. A down monitor always needs 2 successful executions in a row to recover.
+	FlapDetection *bool `json:"flapDetection,omitempty"`
 
 	// FollowRedirects Whether to follow redirects or not.
 	FollowRedirects bool `json:"followRedirects"`
@@ -663,12 +718,13 @@ type NotificationType string
 // NotificationChannel defines model for NotificationChannel.
 type NotificationChannel struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema              *string                      `json:"$schema,omitempty"`
-	EnabledIntegrations *[]string                    `json:"enabledIntegrations,omitempty"`
-	Id                  *string                      `json:"id,omitempty"`
-	Name                string                       `json:"name"`
-	Tags                []string                     `json:"tags"`
-	Targets             *[]NotificationChannelTarget `json:"targets,omitempty"`
+	Schema              *string                       `json:"$schema,omitempty"`
+	EnabledIntegrations *[]string                     `json:"enabledIntegrations,omitempty"`
+	Id                  *string                       `json:"id,omitempty"`
+	Name                string                        `json:"name"`
+	Reminders           *NotificationChannelReminders `json:"reminders,omitempty"`
+	Tags                []string                      `json:"tags"`
+	Targets             *[]NotificationChannelTarget  `json:"targets,omitempty"`
 }
 
 // NotificationChannelDetails defines model for NotificationChannelDetails.
@@ -682,6 +738,21 @@ type NotificationChannelDetails struct {
 	RecentNotifications      *[]Notification  `json:"recentNotifications,omitempty"`
 	UpdatedAt                time.Time        `json:"updated_at"`
 }
+
+// NotificationChannelReminders defines model for NotificationChannelReminders.
+type NotificationChannelReminders struct {
+	// Enabled Off for every channel until turned on
+	Enabled bool `json:"enabled"`
+
+	// IntervalMinutes Minutes from the start of the outage to the first reminder and between reminders
+	IntervalMinutes NotificationChannelRemindersIntervalMinutes `json:"intervalMinutes"`
+
+	// MaxCount Reminders at most; 0 until the outage ends
+	MaxCount int64 `json:"maxCount"`
+}
+
+// NotificationChannelRemindersIntervalMinutes Minutes from the start of the outage to the first reminder and between reminders
+type NotificationChannelRemindersIntervalMinutes int64
 
 // NotificationChannelTarget defines model for NotificationChannelTarget.
 type NotificationChannelTarget struct {
@@ -713,13 +784,14 @@ type NotificationIntegrationType string
 
 // NotificationIntegrationConfiguration defines model for NotificationIntegrationConfiguration.
 type NotificationIntegrationConfiguration struct {
-	Discord   *DiscordConfiguration   `json:"discord,omitempty"`
-	Email     *EmailConfiguration     `json:"email,omitempty"`
-	Pagerduty *PagerDutyConfiguration `json:"pagerduty,omitempty"`
-	Slack     *SlackConfiguration     `json:"slack,omitempty"`
-	Teams     *TeamsConfiguration     `json:"teams,omitempty"`
-	Telegram  *TelegramConfiguration  `json:"telegram,omitempty"`
-	Webhook   *WebhookConfiguration   `json:"webhook,omitempty"`
+	Discord    *DiscordConfiguration    `json:"discord,omitempty"`
+	Email      *EmailConfiguration      `json:"email,omitempty"`
+	MobilePush *MobilePushConfiguration `json:"mobilePush,omitempty"`
+	Pagerduty  *PagerDutyConfiguration  `json:"pagerduty,omitempty"`
+	Slack      *SlackConfiguration      `json:"slack,omitempty"`
+	Teams      *TeamsConfiguration      `json:"teams,omitempty"`
+	Telegram   *TelegramConfiguration   `json:"telegram,omitempty"`
+	Webhook    *WebhookConfiguration    `json:"webhook,omitempty"`
 }
 
 // PagerDutyConfiguration defines model for PagerDutyConfiguration.
@@ -819,7 +891,10 @@ type SSLInfo struct {
 // ScheduledTask defines model for ScheduledTask.
 type ScheduledTask struct {
 	// Schema A URL to the JSON Schema for this object.
-	Schema    *string    `json:"$schema,omitempty"`
+	Schema *string `json:"$schema,omitempty"`
+
+	// BeatToken The task's beat credential: the job reports to /v1/beat/{beatToken}. Treat it like a secret; the task id is public (status pages, incidents) and reports nothing.
+	BeatToken *string    `json:"beatToken,omitempty"`
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	CronTask  *CronTask  `json:"cronTask,omitempty"`
 
@@ -856,7 +931,9 @@ type ScheduledTaskEvent struct {
 
 // ScheduledTaskHealthDetails defines model for ScheduledTaskHealthDetails.
 type ScheduledTaskHealthDetails struct {
-	CronTask *CronTask `json:"cronTask,omitempty"`
+	// BeatToken The task's beat credential: the job reports to /v1/beat/{beatToken}. Treat it like a secret.
+	BeatToken string    `json:"beatToken"`
+	CronTask  *CronTask `json:"cronTask,omitempty"`
 
 	// DownSince unix timestamp
 	DownSince *int64 `json:"downSince,omitempty"`
@@ -981,7 +1058,19 @@ type StatusPageDomain struct {
 	Hostname  string    `json:"hostname"`
 	Id        string    `json:"id"`
 	LastError *string   `json:"lastError,omitempty"`
-	Status    string    `json:"status"`
+
+	// LastErrorCode lastError as a stable code the app translates: waiting_for_cname, waiting_for_txt, domain_in_use, txt_missing, txt_missing_released, ingress_failed, certificate_check_failed; absent when the message has none, then only lastError has the text
+	LastErrorCode *string `json:"lastErrorCode,omitempty"`
+
+	// LastErrorParams the parameters of lastErrorCode (target, record, reason); their values are in lastError's text too
+	LastErrorParams *map[string]string `json:"lastErrorParams,omitempty"`
+	Status          string             `json:"status"`
+
+	// TxtRecordName name of the TXT record that proves control of the hostname
+	TxtRecordName string `json:"txtRecordName"`
+
+	// TxtRecordValue value of that TXT record: this domain's verification token; keep the record while the domain is in use
+	TxtRecordValue string `json:"txtRecordValue"`
 }
 
 // StatusPageRouteCheckResponseBody defines model for StatusPageRouteCheckResponseBody.
@@ -1022,16 +1111,22 @@ type StatusPageSectionScheduledTask struct {
 
 // StepResult defines model for StepResult.
 type StepResult struct {
-	Asserts  *[]AssertResult `json:"asserts,omitempty"`
-	DnsInfo  *DNSInfo        `json:"dnsInfo,omitempty"`
-	EndAt    time.Time       `json:"endAt"`
-	Error    *string         `json:"error,omitempty"`
-	Response *Response       `json:"response,omitempty"`
-	SslInfo  *SSLInfo        `json:"sslInfo,omitempty"`
-	StartAt  time.Time       `json:"startAt"`
-	StepId   string          `json:"stepId"`
-	Success  bool            `json:"success"`
-	Timings  *HttpTimings    `json:"timings,omitempty"`
+	Asserts *[]AssertResult `json:"asserts,omitempty"`
+	DnsInfo *DNSInfo        `json:"dnsInfo,omitempty"`
+	EndAt   time.Time       `json:"endAt"`
+	Error   *string         `json:"error,omitempty"`
+
+	// ErrorCode why the step could not be carried out, as a stable code the app translates (e.g. connection_refused, timeout, dns_not_found, unknown); absent when the pinger reported none, then only error has the text
+	ErrorCode *string `json:"errorCode,omitempty"`
+
+	// ErrorParams the parameters of errorCode (e.g. addr, host, url, reason, message); their values are in error's text too
+	ErrorParams *map[string]string `json:"errorParams,omitempty"`
+	Response    *Response          `json:"response,omitempty"`
+	SslInfo     *SSLInfo           `json:"sslInfo,omitempty"`
+	StartAt     time.Time          `json:"startAt"`
+	StepId      string             `json:"stepId"`
+	Success     bool               `json:"success"`
+	Timings     *HttpTimings       `json:"timings,omitempty"`
 }
 
 // TeamsConfiguration defines model for TeamsConfiguration.
