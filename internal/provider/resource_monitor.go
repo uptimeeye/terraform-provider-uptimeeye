@@ -89,6 +89,7 @@ type monitorOptionsModel struct {
 	Timeout           types.Int64 `tfsdk:"timeout"`
 	FailureThreshold  types.Int64 `tfsdk:"failure_threshold"`
 	FollowRedirects   types.Bool  `tfsdk:"follow_redirects"`
+	FlapDetection     types.Bool  `tfsdk:"flap_detection"`
 	LocationThreshold types.Int64 `tfsdk:"location_threshold"`
 }
 
@@ -141,6 +142,7 @@ func monitorOptionsAttrTypes() map[string]attr.Type {
 		"timeout":            types.Int64Type,
 		"failure_threshold":  types.Int64Type,
 		"follow_redirects":   types.BoolType,
+		"flap_detection":     types.BoolType,
 		"location_threshold": types.Int64Type,
 	}
 }
@@ -347,6 +349,12 @@ func (r *MonitorResource) Schema(ctx context.Context, req resource.SchemaRequest
 						Computed:            true,
 						Default:             booldefault.StaticBool(true),
 					},
+					"flap_detection": schema.BoolAttribute{
+						MarkdownDescription: "Whether flapping is detected: the third outage within 60 minutes (at least 12 check intervals) stays open as one flapping outage with one notification, until no check failed for 30 minutes (at least 6 check intervals). Has no effect on monitors checked less often than every 30 minutes.",
+						Optional:            true,
+						Computed:            true,
+						Default:             booldefault.StaticBool(true),
+					},
 					"location_threshold": schema.Int64Attribute{
 						MarkdownDescription: "Number of locations that must fail before triggering an alarm, 1 to 10 and at most the number of `locations`.",
 						Optional:            true,
@@ -447,6 +455,7 @@ func buildMonitorBody(ctx context.Context, diags *diag.Diagnostics, plan *Monito
 			Timeout:           optModel.Timeout.ValueInt64(),
 			FailureThreshold:  optModel.FailureThreshold.ValueInt64(),
 			FollowRedirects:   optModel.FollowRedirects.ValueBool(),
+			FlapDetection:     ptr(optModel.FlapDetection.ValueBool()),
 			LocationThreshold: optModel.LocationThreshold.ValueInt64(),
 		},
 		// The DTO requires a status value; the server ignores it (real status
@@ -469,6 +478,7 @@ func monitorToState(ctx context.Context, diags *diag.Diagnostics, monitor *apicl
 		Timeout:           types.Int64Value(monitor.Options.Timeout),
 		FailureThreshold:  types.Int64Value(monitor.Options.FailureThreshold),
 		FollowRedirects:   types.BoolValue(monitor.Options.FollowRedirects),
+		FlapDetection:     types.BoolValue(deref(monitor.Options.FlapDetection, true)),
 		LocationThreshold: types.Int64Value(monitor.Options.LocationThreshold),
 	})
 	diags.Append(d...)
